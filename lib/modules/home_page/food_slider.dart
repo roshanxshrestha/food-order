@@ -6,6 +6,8 @@ import 'package:food_delivery/common/customtext.dart';
 import 'package:food_delivery/common/icon_text.dart';
 import 'package:food_delivery/utils/colors.dart';
 
+import '../../constants/dimension.dart';
+
 class MainFoodSlider extends StatefulWidget {
   const MainFoodSlider({Key? key}) : super(key: key);
 
@@ -17,14 +19,13 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
   PageController pageController = PageController(viewportFraction: 0.85);
   var _currPageValue = 0.0;
   final double _scaleFactor = 0.8;
-  final double _imgHeight = 230;
+  final double _imgHeight = Dimension.pageViewContainer;
   @override
   void initState() {
     super.initState();
     pageController.addListener(() {
       setState(() {
         _currPageValue = pageController.page!;
-        log("Current page =  $_currPageValue");
       });
     });
   }
@@ -63,6 +64,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
       ],
     );
   }
+  //food slider animation
 
   Widget _buildSliderItem(int index) {
     Matrix4 matrix = Matrix4.identity();
@@ -109,7 +111,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 120,
+              height: Dimension.pageViewTextContainer,
               margin: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -128,7 +130,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(text: "Food Name"),
-                  const SizedBox(height: 10),
+                  SizedBox(height: Dimension.height10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -145,7 +147,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                               },
                             ),
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: Dimension.height10),
                           CustomText(
                             text: "5",
                             color: AppColors.paraColor,
@@ -168,7 +170,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: Dimension.height10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: const [
