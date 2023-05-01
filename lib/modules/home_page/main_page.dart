@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/common/customtext.dart';
+import 'package:food_delivery/constants/dimension.dart';
 import 'package:food_delivery/modules/home_page/food_slider.dart';
 import 'package:food_delivery/utils/colors.dart';
 
@@ -18,8 +19,9 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 50, bottom: 15),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.only(
+                  top: Dimension.height45, bottom: Dimension.height15),
+              padding: EdgeInsets.symmetric(horizontal: Dimension.width20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -35,7 +37,7 @@ class _MainPageState extends State<MainPage> {
                           CustomText(
                             text: "Kathmandu",
                             color: AppColors.textColor,
-                            fontSize: 14,
+                            fontSize: Dimension.font14,
                           ),
                           const Icon(Icons.arrow_drop_down_outlined)
                         ],
@@ -43,21 +45,26 @@ class _MainPageState extends State<MainPage> {
                     ],
                   ),
                   Container(
-                    height: 45,
-                    width: 45,
+                    height: Dimension.height45,
+                    width: Dimension.height45,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(Dimension.radius15),
                       color: AppColors.mainColor,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.search,
                       color: Colors.white,
+                      size: Dimension.iconSize24,
                     ),
                   ),
                 ],
               ),
             ),
-            const MainFoodSlider(),
+            const Expanded(
+              child: SingleChildScrollView(
+                child: MainFoodSlider(),
+              ),
+            ),
           ],
         ),
       ),
