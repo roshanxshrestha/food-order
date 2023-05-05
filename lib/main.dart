@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/popularfooddetails",
+      initialRoute: "/recommendedfooddetails",
       getPages: AppRoutes.generateRoute(),
     );
   }
