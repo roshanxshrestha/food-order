@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants/dimension.dart';
+import '../utils/dimension.dart';
 import '../utils/colors.dart';
 import 'customtext.dart';
 import 'icon_text.dart';

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/utils/colors.dart';
 
-import '../constants/dimension.dart';
+import '../utils/dimension.dart';
 
 class CustomText extends StatelessWidget {
   final String text;
