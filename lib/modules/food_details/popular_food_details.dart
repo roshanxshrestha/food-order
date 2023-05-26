@@ -3,17 +3,23 @@ import 'package:food_delivery/common/app_icon.dart';
 import 'package:food_delivery/common/customtext.dart';
 import 'package:food_delivery/common/expandable_text.dart';
 import 'package:food_delivery/common/food_info.dart';
-import 'package:food_delivery/modules/home_page/food_page_body.dart';
-import 'package:food_delivery/modules/home_page/main_page.dart';
+import 'package:food_delivery/controllers/cart_controller.dart';
+import 'package:food_delivery/controllers/popular_product_controller.dart';
+import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
 
 class PopularFoodDetails extends StatelessWidget {
-  const PopularFoodDetails({Key? key}) : super(key: key);
+  int pageId;
+  PopularFoodDetails({Key? key, required this.pageId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var product =
+        Get.find<PopularProductController>().popularProductList[pageId];
+    Get.find<PopularProductController>()
+        .initProduct(Get.find<CartController>());
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -25,10 +31,12 @@ class PopularFoodDetails extends StatelessWidget {
             child: Container(
               width: double.maxFinite,
               height: Dimension.popFoodImgScreen,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/image/food0.png"),
+                  image: NetworkImage(AppConstants.BASE_URL +
+                      AppConstants.UPLOAD_URL +
+                      product.img!),
                 ),
               ),
             ),
@@ -43,10 +51,11 @@ class PopularFoodDetails extends StatelessWidget {
               children: [
                 GestureDetector(
                     onTap: (() {
-                      Get.back();
+                      Get.toNamed("/");
+                      // Get.offAllNamed("/");
                     }),
-                    child: AppIcon(icon: Icons.close)),
-                AppIcon(icon: Icons.shopping_cart_outlined),
+                    child: const AppIcon(icon: Icons.close)),
+                const AppIcon(icon: Icons.shopping_cart_outlined),
               ],
             ),
           ),
@@ -68,16 +77,14 @@ class PopularFoodDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const FoodInfoCol(text: "Food Name"),
+                  FoodInfoCol(text: product.name!),
                   SizedBox(height: Dimension.height20),
                   const BigText(text: "Details"),
                   SizedBox(height: Dimension.height10),
                   //expandable text widget
-                  const Expanded(
+                  Expanded(
                     child: SingleChildScrollView(
-                      child: ExpandableText(
-                          text:
-                              "Food, substance consisting essentially of protein, carbohydrate, fat, and other nutrients used in the body of an organism to sustain growth and vital processes and to furnish energy. The absorption and utilization of food by the body is fundamental to nutrition and is facilitated by digestion.Food, substance consisting essentially of protein, carbohydrate, fat, and other nutrients used in the body of an organism to sustain growth and vital processes and to furnish energy. The absorption and utilization of food by the body is fundamental to nutrition and is facilitated by digestion.Food, substance consisting essentially of protein, carbohydrate, fat, and other nutrients used in the body of an organism to sustain growth and vital processes and to furnish energy. The absorption and utilization of food by the body is fundamental to nutrition and is facilitated by digestion."),
+                      child: ExpandableText(text: product.description!),
                     ),
                   )
                 ],
@@ -86,55 +93,74 @@ class PopularFoodDetails extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: Dimension.bottomBarHeight,
-        padding: EdgeInsets.symmetric(
-            vertical: Dimension.height30, horizontal: Dimension.width20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimension.radius20),
-            topRight: Radius.circular(Dimension.radius20),
-          ),
-          color: AppColors.buttonBackgroundColor,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.all(Dimension.height20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimension.radius20),
-                color: Colors.white,
+      bottomNavigationBar: GetBuilder<PopularProductController>(
+        builder: (popularProduct) {
+          return Container(
+            height: Dimension.bottomBarHeight,
+            padding: EdgeInsets.symmetric(
+                vertical: Dimension.height30, horizontal: Dimension.width20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(Dimension.radius20),
+                topRight: Radius.circular(Dimension.radius20),
               ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.remove,
-                    color: AppColors.signColor,
-                  ),
-                  SizedBox(width: Dimension.width10 / 2),
-                  const BigText(text: "0"),
-                  SizedBox(width: Dimension.width10 / 2),
-                  const Icon(
-                    Icons.add,
-                    color: AppColors.signColor,
-                  ),
-                ],
-              ),
+              color: AppColors.buttonBackgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.all(Dimension.height20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimension.radius20),
-                color: AppColors.mainColor,
-              ),
-              child: CustomText(
-                text: "Rs 10 | Add to Cart",
-                color: Colors.white,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(Dimension.height20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimension.radius20),
+                    color: Colors.white,
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          popularProduct.setQuantity(false);
+                        },
+                        child: const Icon(
+                          Icons.remove,
+                          color: AppColors.signColor,
+                        ),
+                      ),
+                      SizedBox(width: Dimension.width10 / 1),
+                      BigText(text: popularProduct.quantity.toString()),
+                      SizedBox(width: Dimension.width10 / 1),
+                      GestureDetector(
+                        onTap: () {
+                          popularProduct.setQuantity(true);
+                        },
+                        child: const Icon(
+                          Icons.add,
+                          color: AppColors.signColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    popularProduct.addItem(product);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(Dimension.height20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimension.radius20),
+                      color: AppColors.mainColor,
+                    ),
+                    child: CustomText(
+                      text: "\$ ${product.price!} | Add to Cart",
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

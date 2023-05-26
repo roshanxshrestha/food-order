@@ -6,11 +6,10 @@ import 'package:food_delivery/common/icon_text.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/recommended_product_controller.dart';
 import 'package:food_delivery/models/popular_products_model.dart';
-import 'package:food_delivery/modules/food_details/popular_food_details.dart';
+import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 
 import '../../utils/dimension.dart';
 
@@ -48,27 +47,25 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
         //slider section
         GetBuilder<PopularProductController>(builder: (popularProducts) {
           return popularProducts.isLoaded
-              ? GestureDetector(
-                  onTap: () {
-                    Get.toNamed("popularfooddetails");
-                  },
-                  child: SizedBox(
-                    height: Dimension.pageView,
-                    child: PageView.builder(
-                      controller: pageController,
-                      itemCount: popularProducts.popularProductList.isEmpty
-                          ? 1
-                          : popularProducts.popularProductList.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, position) {
-                        return _buildSliderItem(position,
-                            popularProducts.popularProductList[position]);
-                      },
-                    ),
+              ? SizedBox(
+                  height: Dimension.pageView,
+                  child: PageView.builder(
+                    controller: pageController,
+                    itemCount: popularProducts.popularProductList.isEmpty
+                        ? 1
+                        : popularProducts.popularProductList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, position) {
+                      return _buildSliderItem(position,
+                          popularProducts.popularProductList[position]);
+                    },
                   ),
                 )
-              : const CircularProgressIndicator(
-                  color: AppColors.mainColor,
+              : Padding(
+                  padding: EdgeInsets.all(50),
+                  child: const CircularProgressIndicator(
+                    color: AppColors.mainColor,
+                  ),
                 );
         }),
         //dots
@@ -120,21 +117,21 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
             ],
           ),
         ),
+        //recommended
         //list of food items
         GetBuilder<RecommendedProductController>(builder: (recommendedProduct) {
           return recommendedProduct.isLoaded
-              ? GestureDetector(
-                  onTap: () {
-                    Get.toNamed("/recommendedfooddetails");
-                  },
-                  child: SizedBox(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount:
-                          recommendedProduct.recommendedProductList.length,
-                      itemBuilder: (context, index) {
-                        return Container(
+              ? SizedBox(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: recommendedProduct.recommendedProductList.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.getRecommendedFood(index));
+                        },
+                        child: Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: Dimension.width20,
                               vertical: Dimension.height10),
@@ -223,9 +220,9 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                               ),
                             ],
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 )
               : const CircularProgressIndicator(
@@ -264,49 +261,54 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
 
     return Transform(
       transform: matrix,
-      child: Stack(
-        children: [
-          Container(
-            height: _imgHeight,
-            margin: EdgeInsets.symmetric(horizontal: Dimension.width10),
-            decoration: BoxDecoration(
-              color: index.isEven
-                  ? const Color(0xFF69c5df)
-                  : const Color(0xFF69c5bf),
-              borderRadius: BorderRadius.circular(Dimension.radius30),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(AppConstants.BASE_URL +
-                    AppConstants.UPLOAD_URL +
-                    popularProduct.img!),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: Dimension.pageViewTextContainer,
-              margin: EdgeInsets.only(
-                  left: Dimension.width30,
-                  right: Dimension.width30,
-                  bottom: Dimension.height10),
-              padding: EdgeInsets.all(Dimension.height15),
+      child: GestureDetector(
+        onTap: () {
+          Get.toNamed(AppRoutes.getPopularFood(index));
+        },
+        child: Stack(
+          children: [
+            Container(
+              height: _imgHeight,
+              margin: EdgeInsets.symmetric(horizontal: Dimension.width10),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(Dimension.radius20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
+                color: index.isEven
+                    ? const Color(0xFF69c5df)
+                    : const Color(0xFF69c5bf),
+                borderRadius: BorderRadius.circular(Dimension.radius30),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(AppConstants.BASE_URL +
+                      AppConstants.UPLOAD_URL +
+                      popularProduct.img!),
+                ),
               ),
-              child: FoodInfoCol(text: popularProduct.name!),
             ),
-          ),
-        ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: Dimension.pageViewTextContainer,
+                margin: EdgeInsets.only(
+                    left: Dimension.width30,
+                    right: Dimension.width30,
+                    bottom: Dimension.height10),
+                padding: EdgeInsets.all(Dimension.height15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(Dimension.radius20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: FoodInfoCol(text: popularProduct.name!),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

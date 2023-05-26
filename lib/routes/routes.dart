@@ -5,25 +5,29 @@ import 'package:get/get.dart';
 
 class AppRoutes {
   static const String initial = "/";
+  static const String popularFood = "/popularfooddetails";
+  static const String recommendedFood = "/recommendedfooddetails";
 
-  // static String getPopularFood() => '$popularfooddetails';
+  static String getPopularFood(int pageId) => '$popularFood?pageId=$pageId';
+  static String getRecommendedFood(int pageId) =>
+      '$recommendedFood?pageId=$pageId';
 
   static List<GetPage> generateRoute() {
     List<GetPage> routes = [
-      GetPage(name: "/mainpage", page: () => const MainPage()),
+      GetPage(name: initial, page: () => const MainPage()),
       GetPage(
-          name: "/recommendedfooddetails",
-          page: () => const RecommendedFoodDetails()),
+        name: popularFood,
+        page: () {
+          var pageId = Get.parameters['pageId'];
+          return PopularFoodDetails(pageId: int.parse(pageId!));
+        },
+      ),
       GetPage(
-          name: "/popularfooddetails",
+          name: recommendedFood,
           page: () {
-            return const PopularFoodDetails();
-          },
-          transition: Transition.topLevel),
-      GetPage(
-          name: "/recommendedfooddetails",
-          page: () {
-            return const RecommendedFoodDetails();
+            var pageId = Get.parameters['pageId'];
+
+            return RecommendedFoodDetails(pageId: int.parse(pageId!));
           },
           transition: Transition.rightToLeft),
     ];
