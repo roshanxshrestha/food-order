@@ -122,6 +122,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
         GetBuilder<RecommendedProductController>(builder: (recommendedProduct) {
           return recommendedProduct.isLoaded
               ? SizedBox(
+                  //wrapit with mediaquery.removepadding to remove whitespace covered
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

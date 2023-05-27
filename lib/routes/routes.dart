@@ -16,12 +16,12 @@ class AppRoutes {
     List<GetPage> routes = [
       GetPage(name: initial, page: () => const MainPage()),
       GetPage(
-        name: popularFood,
-        page: () {
-          var pageId = Get.parameters['pageId'];
-          return PopularFoodDetails(pageId: int.parse(pageId!));
-        },
-      ),
+          name: popularFood,
+          page: () {
+            var pageId = Get.parameters['pageId'];
+            return PopularFoodDetails(pageId: int.parse(pageId!));
+          },
+          transition: Transition.rightToLeft),
       GetPage(
           name: recommendedFood,
           page: () {

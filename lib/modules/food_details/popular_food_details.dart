@@ -5,6 +5,8 @@ import 'package:food_delivery/common/expandable_text.dart';
 import 'package:food_delivery/common/food_info.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
+import 'package:food_delivery/modules/cart/cart_page.dart';
+import 'package:food_delivery/modules/home_page/main_page.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:food_delivery/utils/colors.dart';
@@ -19,7 +21,7 @@ class PopularFoodDetails extends StatelessWidget {
     var product =
         Get.find<PopularProductController>().popularProductList[pageId];
     Get.find<PopularProductController>()
-        .initProduct(Get.find<CartController>());
+        .initProduct(product, Get.find<CartController>());
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -51,11 +53,51 @@ class PopularFoodDetails extends StatelessWidget {
               children: [
                 GestureDetector(
                     onTap: (() {
-                      Get.toNamed("/");
+                      Get.to(const MainPage());
                       // Get.offAllNamed("/");
                     }),
-                    child: const AppIcon(icon: Icons.close)),
-                const AppIcon(icon: Icons.shopping_cart_outlined),
+                    child: const AppIcon(icon: Icons.arrow_back_ios_new)),
+                GetBuilder<PopularProductController>(
+                  builder: (controller) {
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => const CartPage());
+                      },
+                      child: Stack(
+                        children: [
+                          const AppIcon(
+                            icon: Icons.shopping_cart_outlined,
+                          ),
+                          Get.find<PopularProductController>().totalItems >= 1
+                              ? const Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: AppIcon(
+                                    icon: Icons.circle,
+                                    size: 20,
+                                    iconColor: Colors.transparent,
+                                    backgroundColor: AppColors.mainColor,
+                                  ),
+                                )
+                              : Container(),
+                          Get.find<PopularProductController>().totalItems >= 1
+                              ? Positioned(
+                                  right: 3,
+                                  top: 3,
+                                  child: CustomText(
+                                    text: Get.find<PopularProductController>()
+                                        .totalItems
+                                        .toString(),
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Container()
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -127,7 +169,11 @@ class PopularFoodDetails extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: Dimension.width10 / 1),
-                      BigText(text: popularProduct.quantity.toString()),
+                      Container(
+                          alignment: Alignment.center,
+                          width: Dimension.width30,
+                          child: BigText(
+                              text: popularProduct.inCartItems.toString())),
                       SizedBox(width: Dimension.width10 / 1),
                       GestureDetector(
                         onTap: () {
