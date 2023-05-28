@@ -5,7 +5,7 @@ import 'package:food_delivery/common/food_info.dart';
 import 'package:food_delivery/common/icon_text.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/recommended_product_controller.dart';
-import 'package:food_delivery/models/popular_products_model.dart';
+import 'package:food_delivery/models/products_model.dart';
 import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/colors.dart';
@@ -38,6 +38,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
   @override
   void dispose() {
     pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,9 +62,9 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                     },
                   ),
                 )
-              : Padding(
+              : const Padding(
                   padding: EdgeInsets.all(50),
-                  child: const CircularProgressIndicator(
+                  child: CircularProgressIndicator(
                     color: AppColors.mainColor,
                   ),
                 );
@@ -130,7 +131,8 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.getRecommendedFood(index));
+                          Get.toNamed(
+                              AppRoutes.getRecommendedFood(index, "home"));
                         },
                         child: Container(
                           margin: EdgeInsets.symmetric(
@@ -264,7 +266,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
       transform: matrix,
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(AppRoutes.getPopularFood(index));
+          Get.toNamed(AppRoutes.getPopularFood(index, "home"));
         },
         child: Stack(
           children: [

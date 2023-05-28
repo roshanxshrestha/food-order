@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:food_delivery/models/popular_products_model.dart';
+import 'package:food_delivery/models/products_model.dart';
 import 'package:get/get.dart';
 
 import '../data/repository/recomended_product_repo.dart';

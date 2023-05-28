@@ -5,16 +5,17 @@ import 'package:food_delivery/common/expandable_text.dart';
 import 'package:food_delivery/common/food_info.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
-import 'package:food_delivery/modules/cart/cart_page.dart';
-import 'package:food_delivery/modules/home_page/main_page.dart';
+import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
 
 class PopularFoodDetails extends StatelessWidget {
-  int pageId;
-  PopularFoodDetails({Key? key, required this.pageId}) : super(key: key);
+  final int pageId;
+  final String page;
+  const PopularFoodDetails({Key? key, required this.pageId, required this.page})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,23 +53,28 @@ class PopularFoodDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                    onTap: (() {
-                      Get.to(const MainPage());
-                      // Get.offAllNamed("/");
-                    }),
+                    onTap: () {
+                      if (page == "cartpage") {
+                        Get.toNamed(AppRoutes.getCartPage());
+                      } else {
+                        Get.toNamed(AppRoutes.getInitial());
+                      }
+                    },
                     child: const AppIcon(icon: Icons.arrow_back_ios_new)),
                 GetBuilder<PopularProductController>(
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => const CartPage());
+                        if (controller.totalItems >= 1) {
+                          Get.toNamed(AppRoutes.getCartPage());
+                        }
                       },
                       child: Stack(
                         children: [
                           const AppIcon(
                             icon: Icons.shopping_cart_outlined,
                           ),
-                          Get.find<PopularProductController>().totalItems >= 1
+                          controller.totalItems >= 1
                               ? const Positioned(
                                   right: 0,
                                   top: 0,

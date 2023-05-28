@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repository/cart_repo.dart';
-import 'package:food_delivery/models/popular_products_model.dart';
+import 'package:food_delivery/models/products_model.dart';
 import 'package:get/get.dart';
 
 import '../models/cart_model.dart';
@@ -31,6 +31,7 @@ class CartController extends GetxController {
             quantity: value.quantity! + quantity,
             isExist: true,
             time: DateTime.now().toString(),
+            product: product,
           );
         },
       );
@@ -50,14 +51,14 @@ class CartController extends GetxController {
               log("quantity is " + value.quantity.toString());
             });
             return CartModel(
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              img: product.img,
-              quantity: quantity,
-              isExist: true,
-              time: DateTime.now().toString(),
-            );
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                img: product.img,
+                quantity: quantity,
+                isExist: true,
+                time: DateTime.now().toString(),
+                product: product);
           },
         );
       } else {
@@ -69,6 +70,8 @@ class CartController extends GetxController {
         );
       }
     }
+    cartRepo.addToCartList(getItems);
+    update();
 
     // log("length of item is " + _items.length.toString());
   }
@@ -106,5 +109,13 @@ class CartController extends GetxController {
     return _items.entries.map((e) {
       return e.value;
     }).toList();
+  }
+
+  int get totalAmount {
+    var total = 0;
+    _items.forEach((key, value) {
+      total += value.quantity! * value.price!;
+    });
+    return total;
   }
 }

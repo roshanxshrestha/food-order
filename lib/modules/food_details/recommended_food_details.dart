@@ -3,19 +3,19 @@ import 'package:food_delivery/common/app_icon.dart';
 import 'package:food_delivery/common/expandable_text.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/recommended_product_controller.dart';
-import 'package:food_delivery/modules/home_page/main_page.dart';
+import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
-
 import '../../common/customtext.dart';
 import '../../controllers/cart_controller.dart';
-import '../cart/cart_page.dart';
 
 class RecommendedFoodDetails extends StatelessWidget {
   final int pageId;
-  const RecommendedFoodDetails({Key? key, required this.pageId})
+  final String page;
+  const RecommendedFoodDetails(
+      {Key? key, required this.pageId, required this.page})
       : super(key: key);
 
   @override
@@ -36,7 +36,11 @@ class RecommendedFoodDetails extends StatelessWidget {
               children: [
                 GestureDetector(
                     onTap: () {
-                      Get.to(const MainPage());
+                      if (page == "cartpage") {
+                        Get.toNamed(AppRoutes.getCartPage());
+                      } else {
+                        Get.toNamed(AppRoutes.getInitial());
+                      }
                     },
                     child: const AppIcon(icon: Icons.arrow_back_ios_new)),
                 // const AppIcon(icon: Icons.shopping_cart_outlined),
@@ -44,7 +48,9 @@ class RecommendedFoodDetails extends StatelessWidget {
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => const CartPage());
+                        if (controller.totalItems >= 1) {
+                          Get.toNamed(AppRoutes.getCartPage());
+                        }
                       },
                       child: Stack(
                         children: [
