@@ -28,7 +28,7 @@ class CartPage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(AppRoutes.getInitial());
+                    Get.back();
                   },
                   child: AppIcon(
                     icon: Icons.arrow_back_ios_new,
@@ -38,11 +38,16 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: Dimension.width20 * 2),
-                AppIcon(
-                  icon: Icons.home,
-                  iconColor: Colors.white,
-                  backgroundColor: AppColors.mainColor,
-                  iconSize: Dimension.iconSize24,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.getInitial());
+                  },
+                  child: AppIcon(
+                    icon: Icons.home,
+                    iconColor: Colors.white,
+                    backgroundColor: AppColors.mainColor,
+                    iconSize: Dimension.iconSize24,
+                  ),
                 ),
                 AppIcon(
                   icon: Icons.shopping_cart,
@@ -253,6 +258,7 @@ class CartPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     // popularProduct.addItem(product);
+                    cartController.addToHistory();
                   },
                   child: Container(
                     padding: EdgeInsets.all(Dimension.height20),
