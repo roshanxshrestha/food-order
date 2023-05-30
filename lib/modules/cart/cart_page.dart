@@ -43,17 +43,45 @@ class CartPage extends StatelessWidget {
                     Get.toNamed(AppRoutes.getInitial());
                   },
                   child: AppIcon(
-                    icon: Icons.home,
+                    icon: Icons.home_outlined,
                     iconColor: Colors.white,
                     backgroundColor: AppColors.mainColor,
                     iconSize: Dimension.iconSize24,
                   ),
                 ),
-                AppIcon(
-                  icon: Icons.shopping_cart,
-                  iconColor: Colors.white,
-                  backgroundColor: AppColors.mainColor,
-                  iconSize: Dimension.iconSize24,
+                Stack(
+                  children: [
+                    const AppIcon(
+                      icon: Icons.shopping_cart_outlined,
+                      backgroundColor: AppColors.mainColor,
+                      iconColor: Colors.white,
+                    ),
+                    Get.find<PopularProductController>().totalItems >= 1
+                        ? const Positioned(
+                            right: 0,
+                            top: 0,
+                            child: AppIcon(
+                              icon: Icons.circle,
+                              size: 20,
+                              iconColor: Colors.white,
+                              backgroundColor: Colors.white,
+                            ),
+                          )
+                        : Container(),
+                    Get.find<PopularProductController>().totalItems >= 1
+                        ? Positioned(
+                            right: 3,
+                            top: 3,
+                            child: CustomText(
+                              text: Get.find<PopularProductController>()
+                                  .totalItems
+                                  .toString(),
+                              fontSize: 12,
+                              color: AppColors.mainColor,
+                            ),
+                          )
+                        : Container(),
+                  ],
                 ),
               ],
             ),

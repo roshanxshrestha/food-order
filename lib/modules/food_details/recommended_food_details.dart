@@ -39,7 +39,7 @@ class RecommendedFoodDetails extends StatelessWidget {
                       if (page == "cartpage") {
                         Get.toNamed(AppRoutes.getCartPage());
                       } else {
-                        Get.toNamed(AppRoutes.getInitial());
+                        Get.back();
                       }
                     },
                     child: const AppIcon(icon: Icons.arrow_back_ios_new)),
