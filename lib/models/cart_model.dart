@@ -33,14 +33,14 @@ class CartModel {
   }
   Map<String, dynamic> toJson() {
     return {
-      "id": this.id,
-      "name": this.name,
-      "price": this.price,
-      "img": this.img,
-      "quantity": this.quantity,
-      "isExist": this.isExist,
-      "time": this.time,
-      "product": this.product!.toJson(),
+      "id": id,
+      "name": name,
+      "price": price,
+      "img": img,
+      "quantity": quantity,
+      "isExist": isExist,
+      "time": time,
+      "product": product!.toJson(),
     };
   }
 }

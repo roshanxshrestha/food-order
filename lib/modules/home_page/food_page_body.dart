@@ -200,10 +200,10 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                                                   .recommendedProductList[index]
                                                   .description),
                                           SizedBox(height: Dimension.height10),
-                                          Row(
+                                          const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
-                                            children: const [
+                                            children: [
                                               IconText(
                                                 icon: Icons.circle,
                                                 text: "Normal",

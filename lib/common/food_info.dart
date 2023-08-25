@@ -59,9 +59,9 @@ class FoodInfoCol extends StatelessWidget {
           ],
         ),
         SizedBox(height: Dimension.height10),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             IconText(
               icon: Icons.circle,
               text: "Normal",
