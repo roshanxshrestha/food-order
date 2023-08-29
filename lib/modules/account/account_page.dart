@@ -72,8 +72,7 @@ class AccountPage extends StatelessWidget {
                         iconSize: Dimension.height10 * 2.5,
                         size: Dimension.height10 * 5,
                       ),
-                      bigText: const BigText(
-                          text: "roshanxshrestha@gmail.commmmmmm"),
+                      bigText: const BigText(text: "roshanxshrestha@gmail.com"),
                     ),
                     SizedBox(height: Dimension.height20),
                     //address
