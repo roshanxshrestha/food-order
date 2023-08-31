@@ -35,11 +35,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildScreens() {
-    return const [
-      MainPage(),
-      SignInPage(),
-      CartHistory(),
-      AccountPage(),
+    return [
+      const MainPage(),
+      const Center(child: Text("history page")),
+      const CartHistory(),
+      const AccountPage(),
     ];
   }
 

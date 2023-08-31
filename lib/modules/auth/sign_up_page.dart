@@ -12,8 +12,6 @@ import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
 
-import '../../routes/routes.dart';
-
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -64,7 +62,7 @@ class SignUpPage extends StatelessWidget {
         );
         authController.registration(signUpBody).then((status) {
           if (status.isSuccess) {
-            Get.to(() => const HomePage());
+            Get.off(() => const HomePage());
           } else {
             showCustomSnackBar(status.message);
           }

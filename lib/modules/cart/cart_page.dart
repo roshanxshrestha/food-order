@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/base/no_data_page.dart';
 import 'package:food_delivery/common/app_icon.dart';
 import 'package:food_delivery/common/customtext.dart';
+import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/routes/routes.dart';
@@ -320,8 +321,11 @@ class CartPage extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // popularProduct.addItem(product);
-                            cartController.addToHistory();
+                            if (Get.find<AuthController>().userLoggedIn()) {
+                              cartController.addToHistory();
+                            } else {
+                              Get.toNamed(AppRoutes.getSignInPage());
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.all(Dimension.height20),

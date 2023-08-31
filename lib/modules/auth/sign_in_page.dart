@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/base/custom_loader.dart';
 import 'package:food_delivery/common/app_text_field.dart';
 import 'package:food_delivery/common/customtext.dart';
+import 'package:food_delivery/modules/account/account_page.dart';
 import 'package:food_delivery/modules/auth/sign_up_page.dart';
-import 'package:food_delivery/routes/routes.dart';
+import 'package:food_delivery/modules/cart/cart_page.dart';
+import 'package:food_delivery/modules/home_page/home_page.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
@@ -38,7 +40,7 @@ class SignInPage extends StatelessWidget {
       } else {
         authController.login(email, password).then((status) {
           if (status.isSuccess) {
-            Get.toNamed(AppRoutes.getCartPage());
+            Get.off(() => const HomePage());
           } else {
             showCustomSnackBar(status.message);
           }

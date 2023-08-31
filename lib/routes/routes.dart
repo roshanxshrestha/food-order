@@ -1,3 +1,4 @@
+import 'package:food_delivery/modules/auth/sign_in_page.dart';
 import 'package:food_delivery/modules/cart/cart_page.dart';
 import 'package:food_delivery/modules/food_details/popular_food_details.dart';
 import 'package:food_delivery/modules/food_details/recommended_food_details.dart';
@@ -12,6 +13,7 @@ class AppRoutes {
   static const String popularFood = "/popularfooddetails";
   static const String recommendedFood = "/recommendedfooddetails";
   static const String cartPage = "/cartpage";
+  static const String signIn = "/signin";
 
   static String getSplashPage() => splashPage;
   static String getInitial() => initial;
@@ -20,6 +22,7 @@ class AppRoutes {
   static String getRecommendedFood(int pageId, String page) =>
       '$recommendedFood?pageId=$pageId&page=$page';
   static String getCartPage() => cartPage;
+  static String getSignInPage() => signIn;
 
   static List<GetPage> generateRoute() {
     List<GetPage> routes = [
@@ -33,6 +36,12 @@ class AppRoutes {
             return PopularFoodDetails(pageId: int.parse(pageId!), page: page!);
           },
           transition: Transition.rightToLeft),
+      GetPage(
+          name: signIn,
+          page: () {
+            return const SignInPage();
+          },
+          transition: Transition.fade),
       GetPage(
           name: recommendedFood,
           page: () {
