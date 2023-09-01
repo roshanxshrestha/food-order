@@ -32,6 +32,18 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "crypto",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/crypto-3.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "csslib",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/csslib-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.5",
       "packageUri": "lib/",
@@ -74,6 +86,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_plugin_android_lifecycle",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.16",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/user/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -86,10 +104,112 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "geocoding",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geocoding-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_android",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geocoding_android-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_ios",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geocoding_ios-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_platform_interface",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geocoding_platform_interface-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "geolocator",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geolocator-10.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "geolocator_android",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geolocator_android-4.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "geolocator_apple",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geolocator_apple-2.2.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "geolocator_platform_interface",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geolocator_platform_interface-4.0.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "geolocator_web",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geolocator_web-2.1.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "geolocator_windows",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/geolocator_windows-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "get",
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/get-4.6.5",
       "packageUri": "lib/",
       "languageVersion": "2.15"
+    },
+    {
+      "name": "google_maps",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/google_maps-6.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "google_maps_flutter",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/google_maps_flutter-2.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "google_maps_flutter_android",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/google_maps_flutter_android-2.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "google_maps_flutter_ios",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/google_maps_flutter_ios-2.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "google_maps_flutter_platform_interface",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/google_maps_flutter_platform_interface-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "google_maps_flutter_web",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/google_maps_flutter_web-0.5.4+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "html",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/html-0.15.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "intl",
@@ -102,6 +222,12 @@
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/js-0.6.7",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "js_wrapping",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/js_wrapping-0.7.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "lints",
@@ -168,6 +294,12 @@
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.5",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "sanitize_html",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/sanitize_html-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "shared_preferences",
@@ -242,6 +374,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "stream_transform",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/stream_transform-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "string_scanner",
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/string_scanner-1.2.0",
       "packageUri": "lib/",
@@ -258,6 +396,18 @@
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/test_api-0.5.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "typed_data",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/typed_data-1.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "uuid",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/uuid-3.0.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "vector_math",
@@ -284,7 +434,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-08-25T02:48:07.040576Z",
+  "generated": "2023-09-01T03:55:21.002729Z",
   "generator": "pub",
   "generatorVersion": "3.0.3"
 }

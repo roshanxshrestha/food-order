@@ -1,3 +1,4 @@
+import 'package:food_delivery/modules/address/add_address_page.dart';
 import 'package:food_delivery/modules/auth/sign_in_page.dart';
 import 'package:food_delivery/modules/cart/cart_page.dart';
 import 'package:food_delivery/modules/food_details/popular_food_details.dart';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const String recommendedFood = "/recommendedfooddetails";
   static const String cartPage = "/cartpage";
   static const String signIn = "/signin";
+  static const String addAddress = "/add-address";
 
   static String getSplashPage() => splashPage;
   static String getInitial() => initial;
@@ -23,6 +25,7 @@ class AppRoutes {
       '$recommendedFood?pageId=$pageId&page=$page';
   static String getCartPage() => cartPage;
   static String getSignInPage() => signIn;
+  static String getAddressPage() => addAddress;
 
   static List<GetPage> generateRoute() {
     List<GetPage> routes = [
@@ -37,26 +40,36 @@ class AppRoutes {
           },
           transition: Transition.rightToLeft),
       GetPage(
-          name: signIn,
-          page: () {
-            return const SignInPage();
-          },
-          transition: Transition.fade),
+        name: signIn,
+        page: () {
+          return const SignInPage();
+        },
+        transition: Transition.fade,
+      ),
       GetPage(
-          name: recommendedFood,
-          page: () {
-            var pageId = Get.parameters['pageId'];
-            var page = Get.parameters['page'];
-            return RecommendedFoodDetails(
-                pageId: int.parse(pageId!), page: page!);
-          },
-          transition: Transition.rightToLeft),
+        name: addAddress,
+        page: () {
+          return const AddAddressPage();
+        },
+        transition: Transition.fade,
+      ),
       GetPage(
-          name: cartPage,
-          page: () {
-            return const CartPage();
-          },
-          transition: Transition.rightToLeft)
+        name: recommendedFood,
+        page: () {
+          var pageId = Get.parameters['pageId'];
+          var page = Get.parameters['page'];
+          return RecommendedFoodDetails(
+              pageId: int.parse(pageId!), page: page!);
+        },
+        transition: Transition.rightToLeft,
+      ),
+      GetPage(
+        name: cartPage,
+        page: () {
+          return const CartPage();
+        },
+        transition: Transition.rightToLeft,
+      ),
     ];
     return routes;
   }

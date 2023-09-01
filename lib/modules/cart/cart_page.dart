@@ -4,6 +4,7 @@ import 'package:food_delivery/common/app_icon.dart';
 import 'package:food_delivery/common/customtext.dart';
 import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
+import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
@@ -322,7 +323,12 @@ class CartPage extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             if (Get.find<AuthController>().userLoggedIn()) {
-                              cartController.addToHistory();
+                              print("logged in");
+                              if (Get.find<LocationController>()
+                                  .addressList
+                                  .isEmpty) {
+                                Get.toNamed(AppRoutes.getAddressPage());
+                              }
                             } else {
                               Get.toNamed(AppRoutes.getSignInPage());
                             }
