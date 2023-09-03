@@ -6,6 +6,7 @@ import 'package:food_delivery/common/customtext.dart';
 import 'package:food_delivery/common/icon_text.dart';
 import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
+import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/user_controller.dart';
 import 'package:food_delivery/modules/auth/sign_in_page.dart';
 import 'package:food_delivery/utils/colors.dart';
@@ -95,16 +96,50 @@ class AccountPage extends StatelessWidget {
                                   ),
                                   SizedBox(height: Dimension.height20),
                                   //address
-                                  AccountWidget(
-                                    appIcon: AppIcon(
-                                      icon: Icons.location_on,
-                                      backgroundColor: AppColors.yellowColor,
-                                      iconColor: Colors.white,
-                                      iconSize: Dimension.height10 * 2.5,
-                                      size: Dimension.height10 * 5,
-                                    ),
-                                    bigText: const BigText(text: "location"),
-                                  ),
+                                  GetBuilder<LocationController>(
+                                      builder: (locationController) {
+                                    if (_userLoggedIn &&
+                                        locationController
+                                            .addressList.isEmpty) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Get.offNamed(
+                                              AppRoutes.getAddressPage());
+                                        },
+                                        child: AccountWidget(
+                                          appIcon: AppIcon(
+                                            icon: Icons.location_on,
+                                            backgroundColor:
+                                                AppColors.yellowColor,
+                                            iconColor: Colors.white,
+                                            iconSize: Dimension.height10 * 2.5,
+                                            size: Dimension.height10 * 5,
+                                          ),
+                                          bigText: const BigText(
+                                              text: "Enter location"),
+                                        ),
+                                      );
+                                    } else {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Get.offNamed(
+                                              AppRoutes.getAddressPage());
+                                        },
+                                        child: AccountWidget(
+                                          appIcon: AppIcon(
+                                            icon: Icons.location_on,
+                                            backgroundColor:
+                                                AppColors.yellowColor,
+                                            iconColor: Colors.white,
+                                            iconSize: Dimension.height10 * 2.5,
+                                            size: Dimension.height10 * 5,
+                                          ),
+                                          bigText: const BigText(
+                                              text: "Your address"),
+                                        ),
+                                      );
+                                    }
+                                  }),
                                   SizedBox(height: Dimension.height20),
                                   //message
                                   AccountWidget(
@@ -128,9 +163,11 @@ class AccountPage extends StatelessWidget {
                                         Get.find<CartController>().clear();
                                         Get.find<CartController>()
                                             .clearCartHistory();
+                                        Get.find<LocationController>()
+                                            .clearAddressList();
                                         Get.offNamed(AppRoutes.getSignInPage());
                                       } else {
-                                        print('you arent logged in');
+                                        Get.offNamed(AppRoutes.getSignInPage());
                                       }
                                     },
                                     child: AccountWidget(

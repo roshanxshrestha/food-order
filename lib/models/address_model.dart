@@ -5,7 +5,7 @@ class AddressModel {
   late String? _contactPersonName;
   late String? _contactPersonNumber;
   late String _address;
-  late String _lattitude;
+  late String _latitude;
   late String _longitude;
   AddressModel({
     id,
@@ -13,22 +13,22 @@ class AddressModel {
     contactPersonName,
     contactPersonNumber,
     address,
-    lattitude,
+    latitude,
     longitude,
   }) {
     _id = id;
     _addressType = addressType;
-    contactPersonName = contactPersonName;
+    _contactPersonName = contactPersonName;
     _contactPersonNumber = contactPersonNumber;
-    address = address;
-    _lattitude = lattitude;
+    _address = address;
+    _latitude = latitude;
     _longitude = longitude;
   }
   String get address => _address;
   String get addressType => _addressType;
   String? get contactPersonName => _contactPersonName;
   String? get contactPersonNumber => _contactPersonNumber;
-  String get latitude => _lattitude;
+  String get latitude => _latitude;
   String get longitude => _longitude;
 
   AddressModel.fromJson(Map<String, dynamic> json) {
@@ -37,7 +37,19 @@ class AddressModel {
     _contactPersonNumber = json['contact_person_number'] ?? "";
     _contactPersonName = json['contact_person_name'] ?? "";
     _address = json['address'];
-    _lattitude = json['latitude'];
+    _latitude = json['latitude'];
     _longitude = json['longitude'];
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = _id;
+    data['address_type'] = _addressType;
+    data['contact_person_number'] = _contactPersonNumber;
+    data['contact_person_name'] = _contactPersonName;
+    data['address'] = _address;
+    data['longitude'] = _longitude;
+    data['latitude'] = _latitude;
+
+    return data;
   }
 }

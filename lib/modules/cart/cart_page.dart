@@ -328,6 +328,8 @@ class CartPage extends StatelessWidget {
                                   .addressList
                                   .isEmpty) {
                                 Get.toNamed(AppRoutes.getAddressPage());
+                              } else {
+                                Get.offNamed(AppRoutes.getInitial());
                               }
                             } else {
                               Get.toNamed(AppRoutes.getSignInPage());

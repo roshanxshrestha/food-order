@@ -29,8 +29,15 @@ class AppRoutes {
 
   static List<GetPage> generateRoute() {
     List<GetPage> routes = [
-      GetPage(name: splashPage, page: () => const SplashScreen()),
-      GetPage(name: initial, page: () => const HomePage()),
+      GetPage(
+        name: splashPage,
+        page: () => const SplashScreen(),
+      ),
+      GetPage(
+        name: initial,
+        page: () => const HomePage(),
+        transition: Transition.fade,
+      ),
       GetPage(
           name: popularFood,
           page: () {

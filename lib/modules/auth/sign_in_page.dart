@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/base/custom_loader.dart';
 import 'package:food_delivery/common/app_text_field.dart';
 import 'package:food_delivery/common/customtext.dart';
-import 'package:food_delivery/modules/account/account_page.dart';
 import 'package:food_delivery/modules/auth/sign_up_page.dart';
-import 'package:food_delivery/modules/cart/cart_page.dart';
 import 'package:food_delivery/modules/home_page/home_page.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
@@ -18,7 +16,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var emailController = TextEditingController();
+    var phoneController = TextEditingController();
     var passwordController = TextEditingController();
     var signUpImages = [
       "t.png",
@@ -26,19 +24,16 @@ class SignInPage extends StatelessWidget {
       "g.png",
     ];
     void _login(AuthController authController) {
-      String email = emailController.text.trim();
+      String phone = phoneController.text.trim();
       String password = passwordController.text.trim();
 
-      if (email.isEmpty) {
-        showCustomSnackBar("Enter email address",
-            title: "Email address required!");
-      } else if (!GetUtils.isEmail(email)) {
-        showCustomSnackBar("Enter a valid email address",
-            title: "Invalid email address!");
+      if (phone.isEmpty) {
+        showCustomSnackBar("Enter phone number",
+            title: "Phone number required!");
       } else if (password.isEmpty) {
         showCustomSnackBar("Enter password", title: "Password required!");
       } else {
-        authController.login(email, password).then((status) {
+        authController.login(phone, password).then((status) {
           if (status.isSuccess) {
             Get.off(() => const HomePage());
           } else {
@@ -93,9 +88,9 @@ class SignInPage extends StatelessWidget {
                     SizedBox(height: Dimension.screenHeight * 0.02),
                     //login fields
                     AppTextField(
-                      textController: emailController,
-                      hintText: "Email",
-                      icon: Icons.email,
+                      textController: phoneController,
+                      hintText: "Phone",
+                      icon: Icons.phone,
                     ),
                     SizedBox(height: Dimension.height30),
                     AppTextField(
