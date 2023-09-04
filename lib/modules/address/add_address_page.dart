@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/base/custom_button.dart';
 import 'package:food_delivery/common/app_text_field.dart';
 import 'package:food_delivery/common/customtext.dart';
 import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/user_controller.dart';
 import 'package:food_delivery/models/address_model.dart';
+import 'package:food_delivery/modules/address/pick_address_map.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
@@ -39,11 +41,17 @@ class _AddAddressPageState extends State<AddAddressPage> {
       Get.find<UserController>().getUserInfo();
     }
     if (Get.find<LocationController>().addressList.isNotEmpty) {
+      if (Get.find<LocationController>().getUserAddressFromLocalStorage() ==
+          "") {
+        Get.find<LocationController>()
+            .saveUserAddress(Get.find<LocationController>().addressList.last);
+      }
+      Get.find<LocationController>().getUserAddress();
       _cameraPosition = CameraPosition(
         target: LatLng(
-            double.parse(Get.find<LocationController>().getAddress["latitude"]),
-            double.parse(
-                Get.find<LocationController>().getAddress["longitude"])),
+          double.parse(Get.find<LocationController>().getAddress["latitude"]),
+          double.parse(Get.find<LocationController>().getAddress["longitude"]),
+        ),
       );
       _initialPosition = LatLng(
           double.parse(Get.find<LocationController>().getAddress["latitude"]),
@@ -74,7 +82,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
               locationController.placemark.locality ?? "";
               locationController.placemark.postalCode ?? "";
               locationController.placemark.country ?? "";
-              print("address in this field is" + _addressController.text);
+              debugPrint("address in this field is" + _addressController.text);
 
               return SingleChildScrollView(
                 child: Column(
@@ -97,6 +105,17 @@ class _AddAddressPageState extends State<AddAddressPage> {
                           GoogleMap(
                             initialCameraPosition: CameraPosition(
                                 target: _initialPosition, zoom: 17),
+                            onTap: (latlng) {
+                              Get.toNamed(
+                                AppRoutes.getPickAddressPage(),
+                                arguments: PickAddressMap(
+                                  fromSignup: false,
+                                  fromAddress: true,
+                                  googleMapController:
+                                      locationController.mapController,
+                                ),
+                              );
+                            },
                             zoomControlsEnabled: false,
                             compassEnabled: false,
                             indoorViewEnabled: true,
@@ -169,7 +188,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
                     Padding(
                       padding: EdgeInsets.only(left: Dimension.width20),
                       child: CustomText(
-                        text: "Delivery address",
+                        text: "Delivery details",
                         fontSize: Dimension.font20 * 0.8,
                       ),
                     ),
@@ -179,101 +198,55 @@ class _AddAddressPageState extends State<AddAddressPage> {
                         hintText: "Your address",
                         icon: Icons.map),
                     SizedBox(height: Dimension.height20),
-                    Padding(
-                      padding: EdgeInsets.only(left: Dimension.width20),
-                      child: CustomText(
-                        text: "Contact name",
-                        fontSize: Dimension.font20 * 0.8,
-                      ),
-                    ),
-                    SizedBox(height: Dimension.height10),
                     AppTextField(
                         textController: _contactPersonName,
                         hintText: "Your name",
                         icon: Icons.person),
                     SizedBox(height: Dimension.height20),
-                    Padding(
-                      padding: EdgeInsets.only(left: Dimension.width20),
-                      child: CustomText(
-                        text: "Contact number",
-                        fontSize: Dimension.font20 * 0.8,
+                    AppTextField(
+                      textController: _contactPersonNumber,
+                      hintText: "Your phone",
+                      icon: Icons.phone,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(Dimension.height20),
+                      child: GetBuilder<LocationController>(
+                        builder: (locationController) {
+                          return CustomButton(
+                            buttonText: "Save address",
+                            onPressed: () {
+                              AddressModel _addressModel = AddressModel(
+                                addressType: locationController.addressTypeList[
+                                    locationController.addressTypeIndex],
+                                contactPersonName: _contactPersonName.text,
+                                contactPersonNumber: _contactPersonNumber.text,
+                                address: _addressController.text,
+                                latitude: locationController.position.latitude
+                                    .toString(),
+                                longitude: locationController.position.longitude
+                                    .toString(),
+                              );
+                              locationController.addAddress(_addressModel).then(
+                                (response) {
+                                  if (response.isSuccess) {
+                                    Get.toNamed(AppRoutes.getInitial());
+                                    Get.snackbar(
+                                        "Address", "Added successfully");
+                                  } else {
+                                    Get.snackbar(
+                                        "Address", "Couldn't save address");
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
-                    SizedBox(height: Dimension.height10),
-                    AppTextField(
-                        textController: _contactPersonNumber,
-                        hintText: "Your phone",
-                        icon: Icons.phone),
                   ],
                 ),
               );
             },
-          );
-        },
-      ),
-      bottomNavigationBar: GetBuilder<LocationController>(
-        builder: (locationController) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  AddressModel _addressModel = AddressModel(
-                    addressType: locationController
-                        .addressTypeList[locationController.addressTypeIndex],
-                    contactPersonName: _contactPersonName.text,
-                    contactPersonNumber: _contactPersonNumber.text,
-                    address: _addressController.text,
-                    latitude: locationController.position.latitude.toString(),
-                    longitude: locationController.position.longitude.toString(),
-                  );
-                  locationController.addAddress(_addressModel).then((response) {
-                    if (response.isSuccess) {
-                      Get.toNamed(AppRoutes.getInitial());
-                      Get.snackbar("Address", "Added successfully");
-                    } else {
-                      Get.snackbar("Address", "Couldn't save address");
-                    }
-                  });
-                },
-                child: Container(
-                  height: Dimension.height20 * 6,
-                  padding: EdgeInsets.symmetric(
-                      vertical: Dimension.height30,
-                      horizontal: Dimension.width20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(Dimension.radius15),
-                      topRight: Radius.circular(Dimension.radius15),
-                    ),
-                    color: AppColors.buttonBackgroundColor,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: Dimension.height20 * 5,
-                        padding: EdgeInsets.all(Dimension.height15),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(Dimension.radius20),
-                          color: AppColors.mainColor,
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: Dimension.width45 * 3,
-                          child: CustomText(
-                            text: "Save address",
-                            color: Colors.white,
-                            fontSize: Dimension.font20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
           );
         },
       ),

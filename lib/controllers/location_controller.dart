@@ -35,7 +35,9 @@ class LocationController extends GetxController implements GetxService {
   int addressTypeIndex = 0;
 
   late GoogleMapController _mapController;
-  final bool _updateAddressData = true;
+  GoogleMapController get mapController => _mapController;
+
+  bool _updateAddressData = true;
   final bool _changeAddress = true;
 
   bool get loading => _loading;
@@ -88,6 +90,10 @@ class LocationController extends GetxController implements GetxService {
       } catch (e) {
         print(e);
       }
+      _loading = false;
+      update();
+    } else {
+      _updateAddressData = true;
     }
   }
 
@@ -169,6 +175,17 @@ class LocationController extends GetxController implements GetxService {
   void clearAddressList() {
     _addressList = [];
     _allAddressList = [];
+    update();
+  }
+
+  String getUserAddressFromLocalStorage() {
+    return locationRepo.getUserAddress();
+  }
+
+  void setAddAddressData() {
+    _position = _pickPosition;
+    _placemark = _pickPlacemark;
+    _updateAddressData = false;
     update();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:food_delivery/modules/address/add_address_page.dart';
+import 'package:food_delivery/modules/address/pick_address_map.dart';
 import 'package:food_delivery/modules/auth/sign_in_page.dart';
 import 'package:food_delivery/modules/cart/cart_page.dart';
 import 'package:food_delivery/modules/food_details/popular_food_details.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const String cartPage = "/cartpage";
   static const String signIn = "/signin";
   static const String addAddress = "/add-address";
+  static const String pickAddressMap = "/pick-address-map";
 
   static String getSplashPage() => splashPage;
   static String getInitial() => initial;
@@ -26,6 +28,7 @@ class AppRoutes {
   static String getCartPage() => cartPage;
   static String getSignInPage() => signIn;
   static String getAddressPage() => addAddress;
+  static String getPickAddressPage() => pickAddressMap;
 
   static List<GetPage> generateRoute() {
     List<GetPage> routes = [
@@ -59,6 +62,14 @@ class AppRoutes {
           return const AddAddressPage();
         },
         transition: Transition.fade,
+      ),
+      GetPage(
+        name: pickAddressMap,
+        page: () {
+          PickAddressMap _pickAddress = Get.arguments;
+          return _pickAddress;
+        },
+        // transition: Transition.fade,
       ),
       GetPage(
         name: recommendedFood,
