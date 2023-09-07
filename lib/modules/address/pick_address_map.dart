@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/base/custom_button.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
+import 'package:food_delivery/modules/address/widgets/search_location_dialog_page.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -69,6 +70,12 @@ class _PickAddressMapState extends State<PickAddressMap> {
                         Get.find<LocationController>()
                             .updatePosition(_cameraPosition, false);
                       },
+                      onMapCreated: (GoogleMapController mapController) {
+                        _mapController = mapController;
+                        if (!widget.fromAddress) {
+                          print("not from address");
+                        }
+                      },
                     ),
                     Center(
                       child: !locationController.loading
@@ -85,35 +92,46 @@ class _PickAddressMapState extends State<PickAddressMap> {
                       top: Dimension.height45,
                       left: Dimension.width20,
                       right: Dimension.width20,
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: Dimension.width10),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor,
-                          borderRadius: BorderRadius.circular(
-                            Dimension.radius20 / 2,
-                          ),
+                      child: InkWell(
+                        onTap: () => Get.dialog(
+                          LocationDialogue(mapController: _mapController),
                         ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              size: Dimension.iconSize24,
-                              color: Colors.white,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Dimension.width10),
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors.mainColor,
+                            borderRadius: BorderRadius.circular(
+                              Dimension.radius20 / 2,
                             ),
-                            Expanded(
-                              child: Text(
-                                locationController.pickPlacemark.name ?? "",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: Dimension.font14,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                size: Dimension.iconSize24,
+                                color: Colors.white,
                               ),
-                            ),
-                          ],
+                              Expanded(
+                                child: Text(
+                                  locationController.pickPlacemark.name ?? "",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: Dimension.font14,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              SizedBox(width: Dimension.width10),
+                              Icon(
+                                Icons.search,
+                                size: Dimension.iconSize24,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
