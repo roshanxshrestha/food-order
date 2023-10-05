@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/base/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../models/order_model.dart';
@@ -44,7 +45,7 @@ class _PaymentScreenState extends State<PaymentPage> {
           title: const Text("Payment"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () => _exitApp(context),
+            onPressed: () => Get.back(),
           ),
           backgroundColor: AppColors.mainColor,
         ),

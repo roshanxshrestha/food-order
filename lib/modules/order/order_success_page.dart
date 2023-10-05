@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/base/custom_button.dart';
 import 'package:food_delivery/routes/routes.dart';
+import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
 
@@ -25,24 +26,26 @@ class OrderSuccessPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                  status == 1
-                      ? "assets/image/checked.png"
-                      : "assets/image/warning.png",
-                  width: 100,
-                  height: 100),
+              Icon(
+                status == 1
+                    ? Icons.check_circle_outline
+                    : Icons.check_circle_outline,
+                size: 100,
+                color: AppColors.mainColor,
+              ),
               SizedBox(height: Dimension.height45),
               Text(
                 status == 1
                     ? "Your order has been placed successfully!"
                     : "Your order failed!",
-                style: TextStyle(fontSize: Dimension.font26),
+                style: TextStyle(fontSize: Dimension.font20),
+                textAlign: TextAlign.center,
               ),
-              SizedBox(height: Dimension.height20),
+              SizedBox(height: Dimension.height10),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: Dimension.height20,
-                  vertical: Dimension.height20,
+                  vertical: Dimension.height10,
                 ),
                 child: Text(
                   status == 1 ? "Successful order!" : "Failed order!",
