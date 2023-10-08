@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/base/common_text_button.dart';
 import 'package:food_delivery/base/no_data_page.dart';
 import 'package:food_delivery/base/show_custom_snackbar.dart';
 import 'package:food_delivery/common/app_icon.dart';
+import 'package:food_delivery/common/app_text_field.dart';
 import 'package:food_delivery/common/customtext.dart';
+import 'package:food_delivery/common/payment_option_button.dart';
 import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
@@ -10,10 +13,12 @@ import 'package:food_delivery/controllers/order_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/user_controller.dart';
 import 'package:food_delivery/models/place_order_model.dart';
+import 'package:food_delivery/modules/order/delivery_options.dart';
 import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
+import 'package:food_delivery/utils/styles.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/recommended_product_controller.dart';
@@ -23,6 +28,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _noteController = TextEditingController();
     return Scaffold(
       body: Stack(
         children: [
@@ -44,7 +50,7 @@ class CartPage extends StatelessWidget {
                     iconSize: Dimension.iconSize24,
                   ),
                 ),
-                SizedBox(width: Dimension.width20 * 2),
+                // SizedBox(width: Dimension.width20 * 2),
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(AppRoutes.getInitial());
@@ -286,93 +292,225 @@ class CartPage extends StatelessWidget {
           })
         ],
       ),
-      bottomNavigationBar: GetBuilder<CartController>(
-        builder: (cartController) {
-          return Container(
-            height: Dimension.bottomBarHeight,
-            padding: EdgeInsets.symmetric(
-                vertical: Dimension.height30, horizontal: Dimension.width20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(Dimension.radius20),
-                topRight: Radius.circular(Dimension.radius20),
+      bottomNavigationBar:
+          GetBuilder<OrderController>(builder: (orderController) {
+        _noteController.text = orderController.foodNote;
+        return GetBuilder<CartController>(
+          builder: (cartController) {
+            return Container(
+              height: Dimension.bottomBarHeight + 50,
+              padding: EdgeInsets.symmetric(
+                  vertical: Dimension.height10, horizontal: Dimension.width20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Dimension.radius20),
+                  topRight: Radius.circular(Dimension.radius20),
+                ),
+                color: AppColors.buttonBackgroundColor,
               ),
-              color: AppColors.buttonBackgroundColor,
-            ),
-            child: cartController.getItems.isNotEmpty
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(Dimension.height20),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(Dimension.radius20),
-                          color: Colors.white,
+              child: cartController.getItems.isNotEmpty
+                  ? Column(
+                      children: [
+                        InkWell(
+                          onTap: () => showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (_) {
+                              return Column(
+                                children: [
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.9,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(
+                                                Dimension.radius15),
+                                            topRight: Radius.circular(
+                                                Dimension.radius15),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: 520,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: Dimension.width20,
+                                                vertical: Dimension.height20,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const PaymentOptionButton(
+                                                    icon: Icons.money,
+                                                    title: "Cash on Delivery",
+                                                    subtitle:
+                                                        "pay after delivery",
+                                                    index: 0,
+                                                  ),
+                                                  const PaymentOptionButton(
+                                                    icon: Icons.paypal_outlined,
+                                                    title: "Paypal",
+                                                    subtitle: "pay safer",
+                                                    index: 1,
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          Dimension.height20),
+                                                  Text(
+                                                    "Delivery options",
+                                                    style:
+                                                        robotoMedium.copyWith(
+                                                            fontSize: Dimension
+                                                                .font20),
+                                                  ),
+                                                  const DeliveryOptions(
+                                                    isFree: false,
+                                                    value: "delivery",
+                                                    amount: 1000,
+                                                    // amount: Get.find<
+                                                    //                 CartController>()
+                                                    //             .totalAmount
+                                                    //             .toDouble() >
+                                                    //         1000
+                                                    //     ? Get.find<
+                                                    //             CartController>()
+                                                    //         .totalAmount
+                                                    //         .toDouble()
+                                                    //     : 1000,
+                                                    title: "Home delivery",
+                                                  ),
+                                                  const DeliveryOptions(
+                                                    isFree: false,
+                                                    value: "take away",
+                                                    amount: 100,
+                                                    title: "Take away",
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          Dimension.height20),
+                                                  Text(
+                                                    "Additional notes",
+                                                    style:
+                                                        robotoMedium.copyWith(
+                                                            fontSize: Dimension
+                                                                .font20),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          Dimension.height10),
+                                                  AppTextField(
+                                                    textController:
+                                                        _noteController,
+                                                    hintText:
+                                                        "I prefer spicy food...",
+                                                    icon: Icons.note,
+                                                    maxLines: true,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ).whenComplete(
+                            () => orderController.setAdditionalNote(
+                              _noteController.text.trim(),
+                            ),
+                          ),
+                          child: const SizedBox(
+                            width: double.maxFinite,
+                            child: CommonTextButton(text: "Payment options"),
+                          ),
                         ),
-                        child: Row(
+                        SizedBox(height: Dimension.height10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(width: Dimension.width10 / 1),
                             Container(
-                                alignment: Alignment.center,
-                                width: Dimension.width30 * 2,
-                                child: BigText(
-                                    text: "\$ " +
-                                        cartController.totalAmount.toString())),
-                            SizedBox(width: Dimension.width10 / 1),
+                              padding: EdgeInsets.all(Dimension.height20),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Dimension.radius20),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(width: Dimension.width10 / 1),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    // width: Dimension.width30 * 3,
+                                    child: BigText(
+                                      text: "Rs. " +
+                                          cartController.totalAmount.toString(),
+                                    ),
+                                  ),
+                                  SizedBox(width: Dimension.width10 / 1),
+                                ],
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (Get.find<AuthController>().userLoggedIn()) {
+                                  if (Get.find<LocationController>()
+                                      .addressList
+                                      .isEmpty) {
+                                    Get.toNamed(AppRoutes.getAddressPage());
+                                  } else {
+                                    var location =
+                                        Get.find<LocationController>()
+                                            .getUserAddress();
+                                    var cart =
+                                        Get.find<CartController>().getItems;
+                                    var user =
+                                        Get.find<UserController>().userModel;
+                                    PlaceOrderBody placeOrder = PlaceOrderBody(
+                                      cart: cart,
+                                      orderAmount: Get.find<CartController>()
+                                          .totalAmount
+                                          .toDouble(),
+                                      orderNote: orderController.foodNote,
+                                      orderType: orderController.orderType,
+                                      paymentMethod:
+                                          orderController.paymentIndex == 0
+                                              ? "cash_on_delivery"
+                                              : "digital_payment",
+                                      address: location.address,
+                                      latitude: location.latitude,
+                                      longitude: location.longitude,
+                                      contactPersonName: user.name,
+                                      contactPersonNumber: user.phone,
+                                      scheduleAt: '',
+                                      distance: 10.0,
+                                    );
+
+                                    Get.find<OrderController>()
+                                        .placeOrder(placeOrder, _callback);
+                                  }
+                                } else {
+                                  Get.toNamed(AppRoutes.getSignInPage());
+                                }
+                              },
+                              child: const CommonTextButton(text: "Check out"),
+                            ),
                           ],
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          if (Get.find<AuthController>().userLoggedIn()) {
-                            if (Get.find<LocationController>()
-                                .addressList
-                                .isEmpty) {
-                              Get.toNamed(AppRoutes.getAddressPage());
-                            } else {
-                              var location = Get.find<LocationController>()
-                                  .getUserAddress();
-                              var cart = Get.find<CartController>().getItems;
-                              var user = Get.find<UserController>().userModel;
-                              PlaceOrderBody placeOrder = PlaceOrderBody(
-                                cart: cart,
-                                orderAmount: 100,
-                                orderNote: "Not about food",
-                                address: location.address,
-                                latitude: location.latitude,
-                                longitude: location.longitude,
-                                contactPersonName: user.name,
-                                contactPersonNumber: user.phone,
-                                scheduleAt: '',
-                                distance: 10.0,
-                              );
-                              Get.find<OrderController>()
-                                  .placeOrder(placeOrder, _callback);
-                            }
-                          } else {
-                            Get.toNamed(AppRoutes.getSignInPage());
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(Dimension.height20),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(Dimension.radius20),
-                            color: AppColors.mainColor,
-                          ),
-                          child: CustomText(
-                            text: "Check out",
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : Container(),
-          );
-        },
-      ),
+                      ],
+                    )
+                  : Container(),
+            );
+          },
+        );
+      }),
     );
   }
 
@@ -381,8 +519,12 @@ class CartPage extends StatelessWidget {
       Get.find<CartController>().clear();
       Get.find<CartController>().removeCartSharedPreference();
       Get.find<CartController>().addToHistory();
-      Get.toNamed(AppRoutes.getPaymentPage(
-          orderID, Get.find<UserController>().userModel.id));
+      if (Get.find<OrderController>().paymentIndex == 0) {
+        Get.offNamed(AppRoutes.getOrderSuccessPage(orderID, "success"));
+      } else {
+        Get.toNamed(AppRoutes.getPaymentPage(
+            orderID, Get.find<UserController>().userModel.id));
+      }
     } else {
       showCustomSnackBar(message);
     }

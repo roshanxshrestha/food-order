@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:food_delivery/base/custom_loader.dart';
 import 'package:food_delivery/controllers/order_controller.dart';
 import 'package:food_delivery/models/order_model.dart';
 import 'package:food_delivery/utils/colors.dart';
@@ -27,7 +26,7 @@ class ViewOrder extends StatelessWidget {
             return SizedBox(
               width: Dimension.screenWidth,
               child: Padding(
-                padding: EdgeInsets.all(Dimension.width10 / 2),
+                padding: EdgeInsets.all(Dimension.width10),
                 child: ListView.builder(
                     itemCount: orderList.length,
                     itemBuilder: (context, index) {
@@ -39,13 +38,20 @@ class ViewOrder extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    'Order No.: ${orderList[index].id.toString()}'),
+                                  'Order No.: ${orderList[index].id.toString()}',
+                                  style: TextStyle(
+                                    color: AppColors.mainBlackColor,
+                                    fontSize: Dimension.font14,
+                                  ),
+                                ),
                                 Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(
-                                          Dimension.height10 / 2),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: Dimension.height10,
+                                        vertical: Dimension.height10 / 2,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: AppColors.mainColor,
                                         borderRadius: BorderRadius.circular(
@@ -54,16 +60,19 @@ class ViewOrder extends StatelessWidget {
                                       ),
                                       child: Text(
                                         '${orderList[index].orderStatus}',
-                                        style: const TextStyle(
-                                            color: Colors.white),
+                                        style: TextStyle(
+                                            color: Theme.of(context).cardColor,
+                                            fontSize: Dimension.font12),
                                       ),
                                     ),
                                     SizedBox(height: Dimension.height10 / 2),
                                     InkWell(
                                       onTap: () {},
                                       child: Container(
-                                        padding: EdgeInsets.all(
-                                            Dimension.height10 / 2),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: Dimension.height10,
+                                          vertical: Dimension.height10 / 2,
+                                        ),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.circular(
@@ -75,7 +84,26 @@ class ViewOrder extends StatelessWidget {
                                                 Theme.of(context).primaryColor,
                                           ),
                                         ),
-                                        child: Text("Track Order"),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/image/tracking.png",
+                                              height: Dimension.height15,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                            SizedBox(
+                                                width: Dimension.width10 / 2),
+                                            Text(
+                                              "track order",
+                                              style: TextStyle(
+                                                fontSize: Dimension.font12,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     )
                                   ],
@@ -90,7 +118,7 @@ class ViewOrder extends StatelessWidget {
               ),
             );
           } else {
-            return Text("Loading");
+            return const CustomLoader();
           }
         },
       ),

@@ -21,7 +21,8 @@ class OrderSuccessPage extends StatelessWidget {
     }
     return Scaffold(
       body: Center(
-        child: SizedBox(
+        child: Container(
+          padding: EdgeInsets.all(Dimension.height20),
           width: Dimension.screenWidth,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +39,7 @@ class OrderSuccessPage extends StatelessWidget {
                 status == 1
                     ? "Your order has been placed successfully!"
                     : "Your order failed!",
-                style: TextStyle(fontSize: Dimension.font20),
+                style: TextStyle(fontSize: Dimension.font16),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: Dimension.height10),
@@ -56,13 +57,10 @@ class OrderSuccessPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: Dimension.height30),
-              Padding(
-                padding: EdgeInsets.all(Dimension.height20),
-                child: CustomButton(
-                  buttonText: "Back to Home",
-                  onPressed: () => Get.offAllNamed(
-                    AppRoutes.getInitial(),
-                  ),
+              CustomButton(
+                buttonText: "Back to Home",
+                onPressed: () => Get.offAllNamed(
+                  AppRoutes.getInitial(),
                 ),
               ),
             ],

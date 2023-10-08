@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/order_controller.dart';
 import 'package:food_delivery/data/repository/cart_repo.dart';
 import 'package:food_delivery/models/products_model.dart';
 import 'package:get/get.dart';
@@ -48,7 +49,7 @@ class CartController extends GetxController {
           () {
             log("adding items to cart " +
                 product.id!.toString() +
-                "quanttity" +
+                "quantity" +
                 quantity.toString());
             _items.forEach((key, value) {
               log("quantity is " + value.quantity.toString());
@@ -116,9 +117,16 @@ class CartController extends GetxController {
 
   int get totalAmount {
     var total = 0;
-    _items.forEach((key, value) {
-      total += value.quantity! * value.price!;
-    });
+    if (Get.find<OrderController>().orderType == "delivery") {
+      _items.forEach((key, value) {
+        total += 100 + value.quantity! * value.price!;
+      });
+    } else {
+      _items.forEach((key, value) {
+        total += value.quantity! * value.price!;
+      });
+    }
+
     return total;
   }
 

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/base/custom_appbar.dart';
 import 'package:food_delivery/base/custom_loader.dart';
 import 'package:food_delivery/common/account_page.dart';
 import 'package:food_delivery/common/app_icon.dart';
 import 'package:food_delivery/common/customtext.dart';
-import 'package:food_delivery/common/icon_text.dart';
 import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/user_controller.dart';
-import 'package:food_delivery/modules/auth/sign_in_page.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
@@ -23,16 +22,12 @@ class AccountPage extends StatelessWidget {
     bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
     if (_userLoggedIn) {
       Get.find<UserController>().getUserInfo();
-      print("useer had logged in");
+      print("user had logged in");
     }
     return Scaffold(
-      appBar: AppBar(
-        title: CustomText(
-          text: "Profile",
-          fontSize: 24,
-          color: Colors.white,
-        ),
-        backgroundColor: AppColors.mainColor,
+      appBar: CustomAppBar(
+        title: "Profile",
+        backButtonExists: false,
       ),
       body: GetBuilder<UserController>(
         builder: (userController) {
