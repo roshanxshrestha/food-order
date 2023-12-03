@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/utils/dimension.dart';
 
 class NoDataPage extends StatelessWidget {
   final String text;
@@ -11,25 +12,28 @@ class NoDataPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Image.asset(
-          imgPath,
-          height: MediaQuery.of(context).size.height * 0.22,
-          width: MediaQuery.of(context).size.width * 0.22,
-        ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: MediaQuery.of(context).size.height * 0.0175,
-            color: Theme.of(context).disabledColor,
+    return Padding(
+      padding: EdgeInsets.only(top: Dimension.height45 * 2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Image.asset(
+            imgPath,
+            height: MediaQuery.of(context).size.height * 0.22,
+            width: MediaQuery.of(context).size.width * 0.22,
           ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+          SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height * 0.0175,
+              color: Theme.of(context).disabledColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }

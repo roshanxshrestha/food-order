@@ -204,16 +204,16 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              IconText(
-                                                icon: Icons.circle,
-                                                text: "Normal",
-                                                iconColor: AppColors.iconColor1,
-                                              ),
-                                              IconText(
-                                                icon: Icons.location_on,
-                                                text: "1.7 km",
-                                                iconColor: AppColors.mainColor,
-                                              ),
+                                              // IconText(
+                                              //   icon: Icons.circle,
+                                              //   text: "Normal",
+                                              //   iconColor: AppColors.iconColor1,
+                                              // ),
+                                              // IconText(
+                                              //   icon: Icons.location_on,
+                                              //   text: "1.7 km",
+                                              //   iconColor: AppColors.mainColor,
+                                              // ),
                                               IconText(
                                                 icon: Icons.access_time_rounded,
                                                 text: "10 min",

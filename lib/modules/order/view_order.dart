@@ -6,6 +6,8 @@ import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
 
+import '../../base/no_data_page.dart';
+
 class ViewOrder extends StatelessWidget {
   final bool isCurrent;
 
@@ -22,6 +24,16 @@ class ViewOrder extends StatelessWidget {
               orderList = isCurrent
                   ? orderController.currentOrderList.reversed.toList()
                   : orderController.historyOrderList.reversed.toList();
+            } else {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: const Center(
+                  child: NoDataPage(
+                    text: "You did't buy anything at all!",
+                    imgPath: "assets/image/empty_box.png",
+                  ),
+                ),
+              );
             }
             return SizedBox(
               width: Dimension.screenWidth,
@@ -37,12 +49,29 @@ class ViewOrder extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Order No.: ${orderList[index].id.toString()}',
-                                  style: TextStyle(
-                                    color: AppColors.mainBlackColor,
-                                    fontSize: Dimension.font14,
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: Dimension.width45 * 4,
+                                      height: Dimension.height20,
+                                      child: Text(
+                                        'Order Date: ${orderList[index].createdAt.toString()}',
+                                        style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: AppColors.mainBlackColor,
+                                          fontSize: Dimension.font14,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Order No.: ${orderList[index].id.toString()}',
+                                      style: TextStyle(
+                                        color: AppColors.mainBlackColor,
+                                        fontSize: Dimension.font14,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,

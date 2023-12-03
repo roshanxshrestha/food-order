@@ -35,14 +35,15 @@ class RecommendedFoodDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                    onTap: () {
-                      if (page == "cartpage") {
-                        Get.toNamed(AppRoutes.getCartPage());
-                      } else {
-                        Get.back();
-                      }
-                    },
-                    child: const AppIcon(icon: Icons.arrow_back_ios_new)),
+                  onTap: () {
+                    if (page == "cartpage") {
+                      Get.toNamed(AppRoutes.getCartPage());
+                    } else {
+                      Get.back();
+                    }
+                  },
+                  child: const AppIcon(icon: Icons.arrow_back_ios_new),
+                ),
                 // const AppIcon(icon: Icons.shopping_cart_outlined),
                 GetBuilder<PopularProductController>(
                   builder: (controller) {

@@ -78,4 +78,9 @@ class ProductModel {
       "typeId": typeId,
     };
   }
+
+  @override
+  String toString() {
+    return 'ProductModel{name: $name, description: $description}';
+  }
 }

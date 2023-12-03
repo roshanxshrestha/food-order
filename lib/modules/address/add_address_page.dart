@@ -227,7 +227,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
                               locationController.addAddress(_addressModel).then(
                                 (response) {
                                   if (response.isSuccess) {
-                                    Get.toNamed(AppRoutes.getInitial());
+                                    Get.back();
                                     Get.snackbar(
                                         "Address", "Added successfully");
                                   } else {

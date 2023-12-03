@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/common/customtext.dart';
+import 'package:food_delivery/modules/home_page/search_page.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:food_delivery/modules/home_page/food_page_body.dart';
 import 'package:food_delivery/utils/colors.dart';
@@ -54,17 +55,23 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ],
                     ),
-                    Container(
-                      height: Dimension.height45,
-                      width: Dimension.height45,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Dimension.radius15),
-                        color: AppColors.mainColor,
-                      ),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                        size: Dimension.iconSize24,
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(SearchPage());
+                      },
+                      child: Container(
+                        height: Dimension.height45,
+                        width: Dimension.height45,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(Dimension.radius15),
+                          color: AppColors.mainColor,
+                        ),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                          size: Dimension.iconSize24,
+                        ),
                       ),
                     ),
                   ],

@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/modules/account/account_page.dart';
-import 'package:food_delivery/modules/auth/sign_up_page.dart';
-import 'package:food_delivery/modules/cart/cart_history.dart';
+import 'package:food_delivery/modules/cart/cart_page.dart';
 import 'package:food_delivery/modules/home_page/main_page.dart';
 import 'package:food_delivery/modules/order/order_page.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
-import '../auth/sign_in_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -39,7 +36,8 @@ class _HomePageState extends State<HomePage> {
     return [
       const MainPage(),
       const OrderPage(),
-      const CartHistory(),
+      // const CartHistory(), //original
+      const CartPage(),
       const AccountPage(),
     ];
   }

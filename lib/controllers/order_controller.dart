@@ -20,7 +20,7 @@ class OrderController extends GetxController implements GetxService {
   String _orderType = "delivery";
   String get orderType => _orderType;
 
-  String _foodNote = "";
+  String _foodNote = "good food";
   String get foodNote => _foodNote;
 
   Future<void> placeOrder(PlaceOrderBody placeOrder, Function callback) async {

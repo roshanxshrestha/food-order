@@ -51,17 +51,17 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
                 // SizedBox(width: Dimension.width20 * 2),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.getInitial());
-                  },
-                  child: AppIcon(
-                    icon: Icons.home_outlined,
-                    iconColor: Colors.white,
-                    backgroundColor: AppColors.mainColor,
-                    iconSize: Dimension.iconSize24,
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.toNamed(AppRoutes.getInitial());
+                //   },
+                //   child: AppIcon(
+                //     icon: Icons.home_outlined,
+                //     iconColor: Colors.white,
+                //     backgroundColor: AppColors.mainColor,
+                //     iconSize: Dimension.iconSize24,
+                //   ),
+                // ),
                 Stack(
                   children: [
                     const AppIcon(
@@ -336,7 +336,7 @@ class CartPage extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             Container(
-                                              height: 520,
+                                              // height: 520,
                                               padding: EdgeInsets.symmetric(
                                                 horizontal: Dimension.width20,
                                                 vertical: Dimension.height20,
@@ -353,8 +353,8 @@ class CartPage extends StatelessWidget {
                                                     index: 0,
                                                   ),
                                                   const PaymentOptionButton(
-                                                    icon: Icons.paypal_outlined,
-                                                    title: "Paypal",
+                                                    icon: Icons.qr_code,
+                                                    title: "Online Payment",
                                                     subtitle: "pay safer",
                                                     index: 1,
                                                   ),
@@ -407,10 +407,82 @@ class CartPage extends StatelessWidget {
                                                     textController:
                                                         _noteController,
                                                     hintText:
-                                                        "I prefer spicy food...",
+                                                        "Please enter a message!",
                                                     icon: Icons.note,
                                                     maxLines: true,
                                                   ),
+                                                  SizedBox(
+                                                      height:
+                                                          Dimension.height20),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      if (Get.find<
+                                                              AuthController>()
+                                                          .userLoggedIn()) {
+                                                        if (Get.find<
+                                                                LocationController>()
+                                                            .addressList
+                                                            .isEmpty) {
+                                                          Get.toNamed(AppRoutes
+                                                              .getAddressPage());
+                                                        } else {
+                                                          var location = Get.find<
+                                                                  LocationController>()
+                                                              .getUserAddress();
+                                                          var cart = Get.find<
+                                                                  CartController>()
+                                                              .getItems;
+                                                          var user = Get.find<
+                                                                  UserController>()
+                                                              .userModel;
+                                                          PlaceOrderBody
+                                                              placeOrder =
+                                                              PlaceOrderBody(
+                                                            cart: cart,
+                                                            orderAmount: Get.find<
+                                                                    CartController>()
+                                                                .totalAmount
+                                                                .toDouble(),
+                                                            orderNote:
+                                                                orderController
+                                                                    .foodNote,
+                                                            orderType:
+                                                                orderController
+                                                                    .orderType,
+                                                            paymentMethod: orderController
+                                                                        .paymentIndex ==
+                                                                    0
+                                                                ? "cash_on_delivery"
+                                                                : "digital_payment",
+                                                            address: location
+                                                                .address,
+                                                            latitude: location
+                                                                .latitude,
+                                                            longitude: location
+                                                                .longitude,
+                                                            contactPersonName:
+                                                                user.name,
+                                                            contactPersonNumber:
+                                                                user.phone,
+                                                            scheduleAt: '',
+                                                            distance: 10.0,
+                                                          );
+
+                                                          Get.find<
+                                                                  OrderController>()
+                                                              .placeOrder(
+                                                                  placeOrder,
+                                                                  _callback);
+                                                        }
+                                                      } else {
+                                                        Get.toNamed(AppRoutes
+                                                            .getSignInPage());
+                                                      }
+                                                    },
+                                                    child: CommonTextButton(
+                                                      text: "Check Out",
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             )
