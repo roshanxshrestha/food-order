@@ -19,6 +19,12 @@ class _HomePageState extends State<HomePage> {
 
   late PersistentTabController _controller;
 
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+  }
+
   // List pages = const [
   //   MainPage(),
   //   Center(child: Text("Next page1")),
@@ -69,12 +75,6 @@ class _HomePageState extends State<HomePage> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
     ];
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = PersistentTabController(initialIndex: 0);
   }
 
   @override

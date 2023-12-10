@@ -10,7 +10,6 @@ import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
-
 import '../../utils/dimension.dart';
 
 class MainFoodSlider extends StatefulWidget {
@@ -200,7 +199,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                                                   .recommendedProductList[index]
                                                   .description),
                                           SizedBox(height: Dimension.height10),
-                                          const Row(
+                                          Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
@@ -215,9 +214,14 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                                               //   iconColor: AppColors.mainColor,
                                               // ),
                                               IconText(
-                                                icon: Icons.access_time_rounded,
-                                                text: "10 min",
-                                                iconColor: AppColors.iconColor2,
+                                                icon: Icons.money,
+                                                text: "Rs. " +
+                                                    recommendedProduct
+                                                        .recommendedProductList[
+                                                            index]
+                                                        .price
+                                                        .toString(),
+                                                iconColor: Colors.green,
                                               ),
                                             ],
                                           ),

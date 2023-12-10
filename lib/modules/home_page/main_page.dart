@@ -40,17 +40,20 @@ class _MainPageState extends State<MainPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "Nepal",
+                          text: "Paju Lounge",
                           color: AppColors.mainColor,
+                          fontSize: Dimension.font16,
                         ),
                         Row(
                           children: [
                             CustomText(
-                              text: "Kathmandu",
+                              text: "Dhading",
                               color: AppColors.textColor,
                               fontSize: Dimension.font14,
                             ),
-                            const Icon(Icons.arrow_drop_down_outlined)
+                            // const Icon(
+                            //   Icons.arrow_drop_down_outlined,
+                            // )
                           ],
                         ),
                       ],
@@ -60,17 +63,32 @@ class _MainPageState extends State<MainPage> {
                         Get.to(SearchPage());
                       },
                       child: Container(
+                        padding: EdgeInsets.all(8),
                         height: Dimension.height45,
-                        width: Dimension.height45,
+                        width: Dimension.width45 * 2.1,
                         decoration: BoxDecoration(
                           borderRadius:
                               BorderRadius.circular(Dimension.radius15),
                           color: AppColors.mainColor,
                         ),
-                        child: Icon(
-                          Icons.search,
-                          color: Colors.white,
-                          size: Dimension.iconSize24,
+                        child: Row(
+                          children: [
+                            Text(
+                              "Menu",
+                              style: TextStyle(
+                                fontSize: Dimension.font16,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: Dimension.width10,
+                            ),
+                            Icon(
+                              Icons.search,
+                              color: Colors.white,
+                              size: Dimension.iconSize24,
+                            ),
+                          ],
                         ),
                       ),
                     ),

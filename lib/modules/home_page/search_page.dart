@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/base/custom_appbar.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
-
 import '../../common/app_icon.dart';
 import '../../common/customtext.dart';
 import '../../common/icon_text.dart';
@@ -20,23 +18,29 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late List<dynamic> product;
-  late List<dynamic> displayList;
+  final TextEditingController _searchController = TextEditingController();
+  final RecommendedProductController _recommendedController = Get.find();
+  final PopularProductController _popularController = Get.find();
+
+  late RxList<dynamic> product;
+  late RxList<dynamic> displayList;
 
   @override
   void initState() {
     super.initState();
-    product = Get.find<RecommendedProductController>().recommendedProductList +
-        Get.find<PopularProductController>().popularProductList;
-    displayList = List.from(product);
+    product = (_recommendedController.recommendedProductList +
+            _popularController.popularProductList)
+        .obs;
+    displayList = product;
   }
 
   void updateList(String value) {
     setState(() {
-      displayList = product
-          .where((element) =>
-              element.name!.toLowerCase().contains(value.toLowerCase()))
-          .toList();
+      displayList = (product
+              .where((element) =>
+                  element.name!.toLowerCase().contains(value.toLowerCase()))
+              .toList())
+          .obs;
     });
   }
 
@@ -44,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search Foods"),
+        title: const Text("Search from Menu"),
         backgroundColor: AppColors.mainColor,
         actions: [
           GetBuilder<PopularProductController>(
@@ -62,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                       const AppIcon(
                         icon: Icons.shopping_cart_outlined,
                       ),
-                      Get.find<PopularProductController>().totalItems >= 1
+                      controller.totalItems >= 1
                           ? const Positioned(
                               right: 0,
                               top: 0,
@@ -74,14 +78,12 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                             )
                           : Container(),
-                      Get.find<PopularProductController>().totalItems >= 1
+                      controller.totalItems >= 1
                           ? Positioned(
                               right: 3,
                               top: 3,
                               child: CustomText(
-                                text: Get.find<PopularProductController>()
-                                    .totalItems
-                                    .toString(),
+                                text: controller.totalItems.toString(),
                                 fontSize: 12,
                                 color: Colors.white,
                               ),
@@ -102,6 +104,7 @@ class _SearchPageState extends State<SearchPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              controller: _searchController,
               onChanged: updateList,
               decoration: InputDecoration(
                 filled: true,
@@ -111,102 +114,122 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   borderSide: BorderSide.none,
                 ),
-                hintText: "momos",
+                hintText: "momos...",
                 prefixIcon: const Icon(Icons.search),
                 prefixIconColor: AppColors.mainColor,
               ),
             ),
             SizedBox(height: Dimension.height20),
             Expanded(
-              child: displayList.length == 0
-                  ? Center(
-                      child: Text("No items found!"),
-                    )
-                  : ListView.builder(
-                      itemCount: displayList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.toNamed(
-                                AppRoutes.getRecommendedFood(index, "home"));
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
+              child: Obx(() {
+                return displayList.isEmpty
+                    ? const Center(
+                        child: Text("No items found!"),
+                      )
+                    : ListView.builder(
+                        itemCount: displayList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              int originalIndex =
+                                  product.indexOf(displayList[index]);
+                              print(
+                                  "originalIndex: $originalIndex, index: $index, product.length: ${product.length}");
+                              if (originalIndex >= 0 &&
+                                  originalIndex < product.length) {
+                                Get.toNamed(AppRoutes.getRecommendedFood(
+                                    originalIndex, "home"));
+                              } else {
+                                print("Invalid originalIndex: $originalIndex");
+                              }
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
                                 horizontal: Dimension.width20,
-                                vertical: Dimension.height10),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: Dimension.listViewImg,
-                                  height: Dimension.listViewImg,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft:
-                                          Radius.circular(Dimension.radius20),
-                                      bottomLeft:
-                                          Radius.circular(Dimension.radius20),
-                                    ),
-                                    color: Colors.white30,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          AppConstants.BASE_URL +
-                                              AppConstants.UPLOAD_URL +
-                                              displayList[index].img!),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
+                                vertical: Dimension.height10,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: Dimension.listViewImg,
                                     height: Dimension.listViewImg,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
-                                        topRight:
+                                        topLeft:
                                             Radius.circular(Dimension.radius20),
-                                        bottomRight:
+                                        bottomLeft:
                                             Radius.circular(Dimension.radius20),
                                       ),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: Dimension.width10,
-                                          right: Dimension.width10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          BigText(
-                                              text: displayList[index].name!),
-                                          SizedBox(height: Dimension.height10),
-                                          SmallText(
-                                              text: displayList[index]
-                                                  .description!),
-                                          SizedBox(height: Dimension.height10),
-                                          const Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              IconText(
-                                                icon: Icons.access_time_rounded,
-                                                text: "10 min",
-                                                iconColor: AppColors.iconColor2,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                      color: Colors.white30,
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                          AppConstants.BASE_URL +
+                                              AppConstants.UPLOAD_URL +
+                                              displayList[index].img!,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    child: Container(
+                                      height: Dimension.listViewImg,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(
+                                              Dimension.radius20),
+                                          bottomRight: Radius.circular(
+                                              Dimension.radius20),
+                                        ),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          left: Dimension.width10,
+                                          right: Dimension.width10,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            BigText(
+                                                text: displayList[index].name!),
+                                            SizedBox(
+                                                height: Dimension.height10),
+                                            SmallText(
+                                                text: displayList[index]
+                                                    .description!),
+                                            SizedBox(
+                                                height: Dimension.height10),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                IconText(
+                                                  icon: Icons.money_sharp,
+                                                  text: "Rs. " +
+                                                      displayList[index]
+                                                          .price!
+                                                          .toString(),
+                                                  iconColor: Colors.green,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      );
+              }),
             ),
           ],
         ),
