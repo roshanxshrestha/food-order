@@ -46,7 +46,7 @@ class CartHistory extends StatelessWidget {
       var outputDate = DateTime.now().toString();
       if (index < getCartHistoryList.length) {
         DateTime parseDate = DateFormat("yy-MM-dd HH:mm:ss")
-            .parse(getCartHistoryList[listCounter].time!);
+            .parse(getCartHistoryList[index].time!);
         var inputDate = DateTime.parse(parseDate.toString());
         var outputFormat = DateFormat("MM/dd/yyyy hh:mm a");
         outputDate = outputFormat.format(inputDate);
@@ -76,9 +76,14 @@ class CartHistory extends StatelessWidget {
                   fontSize: Dimension.font20,
                   color: Colors.white,
                 ),
-                const AppIcon(
-                  icon: Icons.shopping_cart_outlined,
-                  iconColor: AppColors.mainColor,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.getCartPage());
+                  },
+                  child: const AppIcon(
+                    icon: Icons.shopping_cart_outlined,
+                    iconColor: AppColors.mainColor,
+                  ),
                 )
               ],
             ),

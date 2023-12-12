@@ -48,7 +48,7 @@ class RecommendedFoodDetails extends StatelessWidget {
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        if (controller.totalItems >= 1) {
+                        if (controller.totalItems >= 0) {
                           Get.toNamed(AppRoutes.getCartPage());
                         }
                       },
@@ -156,7 +156,7 @@ class RecommendedFoodDetails extends StatelessWidget {
                       ),
                     ),
                     CustomText(
-                      text: "\$ ${product.price!} X ${controller.inCartItems}",
+                      text: "Rs. ${product.price!} X ${controller.inCartItems}",
                       fontSize: Dimension.font20,
                     ),
                     GestureDetector(
@@ -216,7 +216,7 @@ class RecommendedFoodDetails extends StatelessWidget {
                           width: Dimension.width45 * 3,
                           child: CustomText(
                             text:
-                                "\$ ${product.price! * controller.inCartItems} | Add to Cart",
+                                "Rs. ${product.price! * controller.inCartItems} | Add to Cart",
                             color: Colors.white,
                           ),
                         ),

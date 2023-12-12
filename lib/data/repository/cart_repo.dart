@@ -24,6 +24,9 @@ class CartRepo {
       element.time = time;
       continue;
     }
+    cartList.forEach((element) {
+      return cart.add(jsonEncode(element));
+    });
     sharedPreferences.setStringList(AppConstants.CART_LIST, cart);
   }
 
@@ -38,9 +41,7 @@ class CartRepo {
     for (var element in carts) {
       cartList.add(CartModel.fromJson(jsonDecode(element)));
     }
-    // carts.forEach((element) {
-    //   cartList.add(CartModel.fromJson(jsonDecode(element)));
-    // });
+
     return cartList;
   }
 

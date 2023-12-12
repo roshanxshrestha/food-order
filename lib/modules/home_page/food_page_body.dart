@@ -10,6 +10,8 @@ import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
+import '../../base/no_data_page.dart';
+import '../../controllers/cart_controller.dart';
 import '../../utils/dimension.dart';
 
 class MainFoodSlider extends StatefulWidget {
@@ -19,38 +21,102 @@ class MainFoodSlider extends StatefulWidget {
   State<MainFoodSlider> createState() => _MainFoodSliderState();
 }
 
-class _MainFoodSliderState extends State<MainFoodSlider> {
-  PageController pageController = PageController(viewportFraction: 0.85);
+class _MainFoodSliderState extends State<MainFoodSlider>
+    with TickerProviderStateMixin {
+  final RecommendedProductController _recommendedController = Get.find();
+
+  late List<dynamic> displayList;
+  late List<dynamic> product;
+  PageController popularProductsPageController =
+      PageController(viewportFraction: 0.85);
+  PageController recommendedProductsPageController =
+      PageController(viewportFraction: 0.85);
   var _currPageValue = 0.0;
   final double _scaleFactor = 0.8;
   final double _imgHeight = Dimension.pageViewContainer;
+
   @override
   void initState() {
     super.initState();
-    pageController.addListener(() {
+    product = (_recommendedController.recommendedProductList);
+    displayList = product;
+
+    popularProductsPageController.addListener(() {
       setState(() {
-        _currPageValue = pageController.page!;
+        _currPageValue = popularProductsPageController.page!;
+      });
+    });
+
+    recommendedProductsPageController.addListener(() {
+      setState(() {
+        _currPageValue = recommendedProductsPageController.page!;
       });
     });
   }
 
   @override
   void dispose() {
-    pageController.dispose();
+    popularProductsPageController.dispose();
+    recommendedProductsPageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    var getCartHistoryList =
+        Get.find<CartController>().getCartHistoryList().reversed.toList();
+
+    Map<String, int> cartItemsPerOrder = {};
+
+    for (int i = 0; i < getCartHistoryList.length; i++) {
+      if (cartItemsPerOrder.containsKey(getCartHistoryList[i].time)) {
+        cartItemsPerOrder.update(
+            getCartHistoryList[i].time!, (value) => ++value);
+      } else {
+        cartItemsPerOrder.putIfAbsent(getCartHistoryList[i].time!, () => 1);
+      }
+    }
+
     return Column(
       children: [
+        Container(
+          margin: EdgeInsets.only(left: Dimension.width30),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomText(
+                text: "Our Special",
+                fontSize: Dimension.font20,
+              ),
+              SizedBox(width: Dimension.width10),
+              Container(
+                margin: const EdgeInsets.only(top: 3),
+                child: const Icon(
+                  Icons.circle,
+                  size: 7,
+                  color: AppColors.paraColor,
+                ),
+              ),
+              SizedBox(width: Dimension.width10),
+              Container(
+                margin: const EdgeInsets.only(top: 2),
+                child: CustomText(
+                  text: "Most Loved",
+                  fontSize: Dimension.font14,
+                  color: AppColors.paraColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: Dimension.height20),
         //slider section
         GetBuilder<PopularProductController>(builder: (popularProducts) {
           return popularProducts.isLoaded
               ? SizedBox(
                   height: Dimension.pageView,
                   child: PageView.builder(
-                    controller: pageController,
+                    controller: popularProductsPageController,
                     itemCount: popularProducts.popularProductList.isEmpty
                         ? 1
                         : popularProducts.popularProductList.length,
@@ -68,6 +134,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                   ),
                 );
         }),
+
         //dots
         GetBuilder<PopularProductController>(builder: (popularProducts) {
           return DotsIndicator(
@@ -84,9 +151,8 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
             ),
           );
         }),
+        SizedBox(height: Dimension.height20),
 
-        //popular text
-        SizedBox(height: Dimension.height30),
         Container(
           margin: EdgeInsets.only(left: Dimension.width30),
           child: Row(
@@ -109,7 +175,7 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
               Container(
                 margin: const EdgeInsets.only(top: 2),
                 child: CustomText(
-                  text: "Food pairing",
+                  text: "You may like",
                   fontSize: Dimension.font14,
                   color: AppColors.paraColor,
                 ),
@@ -119,129 +185,263 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
         ),
         SizedBox(height: Dimension.height20),
         //recommended
-        //list of food items
-        GetBuilder<RecommendedProductController>(builder: (recommendedProduct) {
-          return recommendedProduct.isLoaded
-              ? SizedBox(
-                  child: MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount:
-                          recommendedProduct.recommendedProductList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.toNamed(
-                                AppRoutes.getRecommendedFood(index, "home"));
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: Dimension.width20,
-                                vertical: Dimension.height10),
-                            child: Row(
-                              children: [
-                                //image section
-                                Container(
-                                  width: Dimension.listViewImg,
-                                  height: Dimension.listViewImg,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft:
-                                          Radius.circular(Dimension.radius20),
-                                      bottomLeft:
-                                          Radius.circular(Dimension.radius20),
-                                    ),
-                                    color: Colors.white30,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          AppConstants.BASE_URL +
-                                              AppConstants.UPLOAD_URL +
-                                              recommendedProduct
-                                                  .recommendedProductList[index]
-                                                  .img!),
-                                    ),
-                                  ),
-                                ),
-                                //text container
-                                Expanded(
-                                  child: Container(
-                                    height: Dimension.listViewImg,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topRight:
-                                            Radius.circular(Dimension.radius20),
-                                        bottomRight:
-                                            Radius.circular(Dimension.radius20),
-                                      ),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: Dimension.width10,
-                                          right: Dimension.width10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+        GetBuilder<CartController>(
+          builder: (_cartController) {
+            var cartList = _cartController.getCartHistoryList();
+            displayList = (product
+                    .where((element) => cartList.any((cartItem) => element.name!
+                        .toLowerCase()
+                        .split(' ')
+                        .any((word) => cartItem.name!
+                            .toLowerCase()
+                            .contains(word.toLowerCase()))))
+                    .take(7)
+                    .toList())
+                .obs;
+
+            return cartList.isNotEmpty
+                ? GetBuilder<RecommendedProductController>(
+                    builder: (recommendedProducts) {
+                    return recommendedProducts.isLoaded
+                        ? SizedBox(
+                            child: MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: displayList.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(AppRoutes.getRecommendedFood(
+                                          index, "home"));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: Dimension.width20,
+                                          vertical: Dimension.height10),
+                                      child: Row(
                                         children: [
-                                          BigText(
-                                              text: recommendedProduct
-                                                  .recommendedProductList[index]
-                                                  .name!),
-                                          SizedBox(height: Dimension.height10),
-                                          SmallText(
-                                              text: recommendedProduct
-                                                  .recommendedProductList[index]
-                                                  .description),
-                                          SizedBox(height: Dimension.height10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              // IconText(
-                                              //   icon: Icons.circle,
-                                              //   text: "Normal",
-                                              //   iconColor: AppColors.iconColor1,
-                                              // ),
-                                              // IconText(
-                                              //   icon: Icons.location_on,
-                                              //   text: "1.7 km",
-                                              //   iconColor: AppColors.mainColor,
-                                              // ),
-                                              IconText(
-                                                icon: Icons.money,
-                                                text: "Rs. " +
-                                                    recommendedProduct
-                                                        .recommendedProductList[
-                                                            index]
-                                                        .price
-                                                        .toString(),
-                                                iconColor: Colors.green,
+                                          //image section
+                                          Container(
+                                            width: Dimension.listViewImg,
+                                            height: Dimension.listViewImg,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(
+                                                    Dimension.radius20),
+                                                bottomLeft: Radius.circular(
+                                                    Dimension.radius20),
                                               ),
-                                            ],
+                                              color: Colors.white30,
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(AppConstants
+                                                        .BASE_URL +
+                                                    AppConstants.UPLOAD_URL +
+                                                    displayList[index].img!),
+                                              ),
+                                            ),
+                                          ),
+                                          //text container
+                                          Expanded(
+                                            child: Container(
+                                              height: Dimension.listViewImg,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(
+                                                      Dimension.radius20),
+                                                  bottomRight: Radius.circular(
+                                                      Dimension.radius20),
+                                                ),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: Dimension.width10,
+                                                    right: Dimension.width10),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    BigText(
+                                                        text: displayList[index]
+                                                            .name!),
+                                                    SizedBox(
+                                                        height:
+                                                            Dimension.height10),
+                                                    SmallText(
+                                                        text: displayList[index]
+                                                            .description),
+                                                    SizedBox(
+                                                        height:
+                                                            Dimension.height10),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        IconText(
+                                                          icon: Icons.money,
+                                                          text: "Rs. " +
+                                                              displayList[index]
+                                                                  .price
+                                                                  .toString(),
+                                                          iconColor:
+                                                              Colors.green,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ],
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                )
-              : const CircularProgressIndicator(
-                  color: AppColors.mainColor,
-                );
-        })
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.all(50),
+                            child: CircularProgressIndicator(
+                              color: AppColors.mainColor,
+                            ),
+                          );
+                  })
+                : GetBuilder<RecommendedProductController>(
+                    builder: (recommendedProducts) {
+                    displayList = product
+                        .where((element) =>
+                            element.name!
+                                .toLowerCase()
+                                .contains("chicken".toLowerCase()) ||
+                            element.name!
+                                .toLowerCase()
+                                .contains("momo".toLowerCase()))
+                        .toList();
+                    return recommendedProducts.isLoaded
+                        ? SizedBox(
+                            child: MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: displayList.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(AppRoutes.getRecommendedFood(
+                                          index, "home"));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: Dimension.width20,
+                                          vertical: Dimension.height10),
+                                      child: Row(
+                                        children: [
+                                          //image section
+                                          Container(
+                                            width: Dimension.listViewImg,
+                                            height: Dimension.listViewImg,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(
+                                                    Dimension.radius20),
+                                                bottomLeft: Radius.circular(
+                                                    Dimension.radius20),
+                                              ),
+                                              color: Colors.white30,
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(AppConstants
+                                                        .BASE_URL +
+                                                    AppConstants.UPLOAD_URL +
+                                                    displayList[index].img!),
+                                              ),
+                                            ),
+                                          ),
+                                          //text container
+                                          Expanded(
+                                            child: Container(
+                                              height: Dimension.listViewImg,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(
+                                                      Dimension.radius20),
+                                                  bottomRight: Radius.circular(
+                                                      Dimension.radius20),
+                                                ),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: Dimension.width10,
+                                                    right: Dimension.width10),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    BigText(
+                                                        text: displayList[index]
+                                                            .name!),
+                                                    SizedBox(
+                                                        height:
+                                                            Dimension.height10),
+                                                    SmallText(
+                                                        text: displayList[index]
+                                                            .description),
+                                                    SizedBox(
+                                                        height:
+                                                            Dimension.height10),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        IconText(
+                                                          icon: Icons.money,
+                                                          text: "Rs. " +
+                                                              displayList[index]
+                                                                  .price
+                                                                  .toString(),
+                                                          iconColor:
+                                                              Colors.green,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.all(50),
+                            child: CircularProgressIndicator(
+                              color: AppColors.mainColor,
+                            ),
+                          );
+                  });
+          },
+        ),
+        //all foods
       ],
     );
   }
@@ -317,7 +517,10 @@ class _MainFoodSliderState extends State<MainFoodSlider> {
                     ),
                   ],
                 ),
-                child: FoodInfoCol(text: popularProduct.name!),
+                child: FoodInfoCol(
+                  text: popularProduct.name!,
+                  price: popularProduct.price!,
+                ),
               ),
             ),
           ],

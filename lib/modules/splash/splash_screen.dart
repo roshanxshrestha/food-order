@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../controllers/popular_product_controller.dart';
 import '../../controllers/recommended_product_controller.dart';
+import '../account/account_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -38,6 +39,10 @@ class _SplashScreenState extends State<SplashScreen>
     );
     Timer(
         const Duration(seconds: 2), () => Get.offNamed(AppRoutes.getInitial()));
+    // Show dialog after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      _showAlertDialog(context);
+    });
   }
 
   @override
@@ -58,6 +63,31 @@ class _SplashScreenState extends State<SplashScreen>
           )
         ],
       ),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Finish up profile'),
+          content: const Text('Some details must be missing on your profile.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the pop-up alert
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AccountPage()));
+              },
+              child: const Text('Go to profile'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

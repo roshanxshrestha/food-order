@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/modules/account/account_page.dart';
-import 'package:food_delivery/modules/cart/cart_page.dart';
+import 'package:food_delivery/modules/cart/cart_history.dart';
 import 'package:food_delivery/modules/home_page/main_page.dart';
 import 'package:food_delivery/modules/order/order_page.dart';
 import 'package:food_delivery/utils/colors.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+import '../../common/customtext.dart';
+import '../../controllers/auth_controller.dart';
+import '../../controllers/user_controller.dart';
+import '../../routes/routes.dart';
+import '../../utils/dimension.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,18 +26,17 @@ class _HomePageState extends State<HomePage> {
 
   late PersistentTabController _controller;
 
+  late List<Widget> _screens;
+  late List<PersistentBottomNavBarItem> _navBarItems;
+
   @override
   void initState() {
-    super.initState();
     _controller = PersistentTabController(initialIndex: 0);
-  }
+    _screens = _buildScreens();
+    _navBarItems = _navBarsItems();
 
-  // List pages = const [
-  //   MainPage(),
-  //   Center(child: Text("Next page1")),
-  //   Center(child: Text("Next page2")),
-  //   Center(child: Text("Next page3")),
-  // ];
+    super.initState();
+  }
 
   void onTapNav(int index) {
     setState(() {
@@ -39,11 +45,58 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildScreens() {
+    bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
+    if (_userLoggedIn) {
+      Get.find<UserController>().getUserInfo();
+      print("user had logged in");
+    }
     return [
       const MainPage(),
-      const OrderPage(),
-      // const CartHistory(), //original
-      const CartPage(),
+      _userLoggedIn
+          ? const OrderPage()
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: double.maxFinite,
+                    height: Dimension.height30 * 5,
+                    margin: EdgeInsets.symmetric(horizontal: Dimension.width20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimension.radius20),
+                      image: const DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("assets/image/signintocontinue.png"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Dimension.screenHeight * 0.02),
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.signIn);
+                    },
+                    child: Container(
+                      width: double.maxFinite,
+                      height: Dimension.height45,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: Dimension.width20),
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(Dimension.radius15),
+                      ),
+                      child: Center(
+                        child: CustomText(
+                          text: "Sign in to see Order History",
+                          color: Colors.white,
+                          fontSize: Dimension.font20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+      const CartHistory(),
       const AccountPage(),
     ];
   }
@@ -77,73 +130,15 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
+  // Function to show the pop-up alert
+
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
       controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-
-      confineInSafeArea: true,
-      backgroundColor: Colors.white, // Default is Colors.white.
-      handleAndroidBackButtonPress: true, // Default is true.
-      resizeToAvoidBottomInset: true,
-      stateManagement: true, // Default is true.
-      hideNavigationBarWhenKeyboardShows: true,
-
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        colorBehindNavBar: Colors.white,
-      ),
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: const ItemAnimationProperties(
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
-      ),
-      screenTransitionAnimation: const ScreenTransitionAnimation(
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
-      ),
-      navBarStyle:
-          NavBarStyle.style12, // Choose the nav bar style with this property.
+      screens: _screens,
+      items: _navBarItems,
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: pages[_selectedIndex],
-  //     bottomNavigationBar: BottomNavigationBar(
-  //       selectedItemColor: AppColors.mainColor,
-  //       unselectedItemColor: Colors.amberAccent,
-  //       showSelectedLabels: false,
-  //       showUnselectedLabels: false,
-  //       onTap: onTapNav,
-  //       selectedFontSize: 0.0,
-  //       unselectedFontSize: 0.0,
-  //       currentIndex: _selectedIndex,
-  //       items: const [
-  //         BottomNavigationBarItem(
-  //           icon: Icon(Icons.home_outlined),
-  //           label: "Home",
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: Icon(Icons.archive_outlined),
-  //           label: "Archive",
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: Icon(Icons.shopping_cart_outlined),
-  //           label: "Cart",
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: Icon(Icons.person_outline),
-  //           label: "Profile",
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

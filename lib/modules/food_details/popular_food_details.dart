@@ -65,7 +65,7 @@ class PopularFoodDetails extends StatelessWidget {
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        if (controller.totalItems >= 1) {
+                        if (controller.totalItems >= 0) {
                           Get.toNamed(AppRoutes.getCartPage());
                         }
                       },
@@ -125,7 +125,10 @@ class PopularFoodDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FoodInfoCol(text: product.name!),
+                  FoodInfoCol(
+                    text: product.name!,
+                    price: product.price!,
+                  ),
                   SizedBox(height: Dimension.height20),
                   const BigText(text: "Details"),
                   SizedBox(height: Dimension.height10),
@@ -204,7 +207,7 @@ class PopularFoodDetails extends StatelessWidget {
                       color: AppColors.mainColor,
                     ),
                     child: CustomText(
-                      text: "\$ ${product.price!} | Add to Cart",
+                      text: "Rs. ${product.price!} | Add to Cart",
                       color: Colors.white,
                     ),
                   ),

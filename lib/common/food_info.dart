@@ -7,7 +7,9 @@ import 'icon_text.dart';
 
 class FoodInfoCol extends StatelessWidget {
   final String text;
-  const FoodInfoCol({Key? key, required this.text}) : super(key: key);
+  final int price;
+  const FoodInfoCol({Key? key, required this.text, required this.price})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,20 +61,20 @@ class FoodInfoCol extends StatelessWidget {
           ],
         ),
         SizedBox(height: Dimension.height10),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconText(
-              icon: Icons.circle,
-              text: "Normal",
-              iconColor: AppColors.iconColor1,
+              icon: Icons.money,
+              text: "Rs. " + price.toString(),
+              iconColor: Colors.green,
             ),
-            IconText(
+            const IconText(
               icon: Icons.location_on,
               text: "1.7 km",
               iconColor: AppColors.mainColor,
             ),
-            IconText(
+            const IconText(
               icon: Icons.access_time_rounded,
               text: "10 min",
               iconColor: AppColors.iconColor2,

@@ -323,7 +323,7 @@ class CartPage extends StatelessWidget {
                                       child: Container(
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.9,
+                                                1,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.only(
@@ -372,16 +372,6 @@ class CartPage extends StatelessWidget {
                                                     isFree: false,
                                                     value: "delivery",
                                                     amount: 1000,
-                                                    // amount: Get.find<
-                                                    //                 CartController>()
-                                                    //             .totalAmount
-                                                    //             .toDouble() >
-                                                    //         1000
-                                                    //     ? Get.find<
-                                                    //             CartController>()
-                                                    //         .totalAmount
-                                                    //         .toDouble()
-                                                    //     : 1000,
                                                     title: "Home delivery",
                                                   ),
                                                   const DeliveryOptions(
@@ -479,7 +469,8 @@ class CartPage extends StatelessWidget {
                                                             .getSignInPage());
                                                       }
                                                     },
-                                                    child: CommonTextButton(
+                                                    child:
+                                                        const CommonTextButton(
                                                       text: "Check Out",
                                                     ),
                                                   )
