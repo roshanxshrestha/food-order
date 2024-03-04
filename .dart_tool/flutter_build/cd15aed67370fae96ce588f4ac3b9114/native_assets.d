@@ -1,0 +1,1 @@
+ /Users/user/dev/projects/flutter/food-order/.dart_tool/flutter_build/cd15aed67370fae96ce588f4ac3b9114/native_assets.yaml: 

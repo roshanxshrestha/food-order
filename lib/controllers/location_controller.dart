@@ -1,5 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:food_delivery/data/api/api_checker.dart';
 import 'package:geocoding/geocoding.dart';
@@ -80,6 +80,8 @@ class LocationController extends GetxController implements GetxService {
             heading: 1,
             speed: 1,
             speedAccuracy: 1,
+            altitudeAccuracy: 1,
+            headingAccuracy: 1,
           );
         } else {
           _pickPosition = Position(
@@ -91,6 +93,8 @@ class LocationController extends GetxController implements GetxService {
             heading: 1,
             speed: 1,
             speedAccuracy: 1,
+            altitudeAccuracy: 1,
+            headingAccuracy: 1,
           );
         }
 
@@ -273,6 +277,8 @@ class LocationController extends GetxController implements GetxService {
       heading: 1,
       speed: 1,
       speedAccuracy: 1,
+      altitudeAccuracy: 1,
+      headingAccuracy: 1,
     );
     _pickPlacemark = Placemark(name: address);
     _changeAddress = false;

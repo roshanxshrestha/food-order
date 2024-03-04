@@ -10,7 +10,7 @@ import 'package:food_delivery/routes/routes.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
-import '../../base/no_data_page.dart';
+
 import '../../controllers/cart_controller.dart';
 import '../../utils/dimension.dart';
 
@@ -195,7 +195,7 @@ class _MainFoodSliderState extends State<MainFoodSlider>
                         .any((word) => cartItem.name!
                             .toLowerCase()
                             .contains(word.toLowerCase()))))
-                    .take(7)
+                    .take(100)
                     .toList())
                 .obs;
 
@@ -212,12 +212,28 @@ class _MainFoodSliderState extends State<MainFoodSlider>
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: displayList.length,
                                 itemBuilder: (context, index) {
+                                  final originalIndex =
+                                      product.indexOf(displayList[index]);
                                   return GestureDetector(
                                     onTap: () {
+                                      // Pass the original index of the item
                                       Get.toNamed(AppRoutes.getRecommendedFood(
-                                          index, "home"));
+                                          originalIndex, "home"));
                                     },
                                     child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              Dimension.radius20),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              offset: Offset(0, 3),
+                                              blurRadius: 6,
+                                              spreadRadius: 0,
+                                            ),
+                                          ]),
                                       margin: EdgeInsets.symmetric(
                                           horizontal: Dimension.width20,
                                           vertical: Dimension.height10),
@@ -321,7 +337,7 @@ class _MainFoodSliderState extends State<MainFoodSlider>
                         .where((element) =>
                             element.name!
                                 .toLowerCase()
-                                .contains("chicken".toLowerCase()) ||
+                                .contains("Chicken".toLowerCase()) ||
                             element.name!
                                 .toLowerCase()
                                 .contains("momo".toLowerCase()))

@@ -200,7 +200,7 @@ class CartPage extends StatelessWidget {
                                                           .spaceBetween,
                                                   children: [
                                                     CustomText(
-                                                      text: "\$ " +
+                                                      text: "Rs. " +
                                                           cartController
                                                               .getItems[index]
                                                               .price

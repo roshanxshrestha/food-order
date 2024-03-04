@@ -60,10 +60,10 @@ class _MainPageState extends State<MainPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(SearchPage());
+                        Get.to(const SearchPage());
                       },
                       child: Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         height: Dimension.height45,
                         width: Dimension.width45 * 2.1,
                         decoration: BoxDecoration(

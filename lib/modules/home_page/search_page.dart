@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
-import '../../common/app_icon.dart';
 import '../../common/customtext.dart';
 import '../../common/icon_text.dart';
 import '../../controllers/recommended_product_controller.dart';
@@ -46,30 +44,48 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Search from Menu"),
+        title: Text(
+          "Search from Menu",
+          style: TextStyle(color: Colors.white, fontSize: Dimension.font20),
+        ),
         backgroundColor: AppColors.mainColor,
         actions: const [],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.only(top: Dimension.height10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _searchController,
-              onChanged: updateList,
-              decoration: InputDecoration(
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    Dimension.radius15,
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: Dimension.width20),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
                   ),
-                  borderSide: BorderSide.none,
+                ],
+                borderRadius: BorderRadius.circular(Dimension.radius15),
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: updateList,
+                decoration: InputDecoration(
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      Dimension.radius15,
+                    ),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: "momos...",
+                  prefixIcon: const Icon(Icons.search),
+                  prefixIconColor: AppColors.mainColor,
+                  fillColor: Colors.white,
                 ),
-                hintText: "momos...",
-                prefixIcon: const Icon(Icons.search),
-                prefixIconColor: AppColors.mainColor,
               ),
             ),
             SizedBox(height: Dimension.height20),
@@ -100,6 +116,18 @@ class _SearchPageState extends State<SearchPage> {
                                 }
                               },
                               child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        Dimension.radius20),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        offset: const Offset(0, 3),
+                                        blurRadius: 6,
+                                        spreadRadius: 0,
+                                      ),
+                                    ]),
                                 margin: EdgeInsets.symmetric(
                                   horizontal: Dimension.width20,
                                   vertical: Dimension.height10,

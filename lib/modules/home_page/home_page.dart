@@ -22,8 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-
   late PersistentTabController _controller;
 
   late List<Widget> _screens;
@@ -39,16 +37,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onTapNav(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() {});
   }
 
   List<Widget> _buildScreens() {
     bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
     if (_userLoggedIn) {
       Get.find<UserController>().getUserInfo();
-      print("user had logged in");
     }
     return [
       const MainPage(),

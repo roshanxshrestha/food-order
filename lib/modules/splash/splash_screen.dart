@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:food_delivery/routes/routes.dart';
+import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimension.dart';
 import 'package:get/get.dart';
 
@@ -83,7 +84,10 @@ class _SplashScreenState extends State<SplashScreen>
                     MaterialPageRoute(
                         builder: (context) => const AccountPage()));
               },
-              child: const Text('Go to profile'),
+              child: const Text(
+                'Go to profile',
+                style: TextStyle(color: AppColors.mainColor),
+              ),
             ),
           ],
         );
