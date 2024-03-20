@@ -103,9 +103,6 @@ class _SearchPageState extends State<SearchPage> {
                               onTap: () {
                                 int originalIndex =
                                     product.indexOf(displayList[index]);
-
-                                // print(
-                                // "originalIndex: $originalIndex, index: $index, product.length: ${product.length}");
                                 if (originalIndex >= 0 &&
                                     originalIndex < product.length) {
                                   Get.toNamed(AppRoutes.getRecommendedFood(
