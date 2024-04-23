@@ -352,12 +352,12 @@ class CartPage extends StatelessWidget {
                                                         "pay after delivery",
                                                     index: 0,
                                                   ),
-                                                  const PaymentOptionButton(
-                                                    icon: Icons.qr_code,
-                                                    title: "Online Payment",
-                                                    subtitle: "pay safer",
-                                                    index: 1,
-                                                  ),
+                                                  // const PaymentOptionButton(
+                                                  //   icon: Icons.qr_code,
+                                                  //   title: "Online Payment",
+                                                  //   subtitle: "pay safer",
+                                                  //   index: 1,
+                                                  // ),
                                                   SizedBox(
                                                       height:
                                                           Dimension.height20),
