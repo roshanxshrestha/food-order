@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/order_controller.dart';
 import 'package:food_delivery/data/repository/cart_repo.dart';
@@ -47,12 +45,12 @@ class CartController extends GetxController {
         _items.putIfAbsent(
           product.id!,
           () {
-            log("adding items to cart " +
+            print("adding items to cart " +
                 product.id!.toString() +
                 "quantity" +
                 quantity.toString());
             _items.forEach((key, value) {
-              log("quantity is " + value.quantity.toString());
+              print("quantity is " + value.quantity.toString());
             });
             return CartModel(
                 id: product.id,

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/common/customtext.dart';
@@ -75,6 +76,77 @@ class _MainFoodSliderState extends State<MainFoodSlider>
       } else {
         cartItemsPerOrder.putIfAbsent(getCartHistoryList[i].time!, () => 1);
       }
+    }
+
+    //-------------------- actual implementation of cosine similarity calculation-----------
+
+    Map<String, List<double>> itemVectors = {};
+
+// Populate itemVectors map
+    for (var products in product) {
+      itemVectors[products.name] = [
+        products.stars.toDouble(),
+        products.price.toDouble()
+      ];
+    }
+
+// Print itemVectors map
+    print(itemVectors);
+    // Function to calculate cosine similarity between two items
+    double cosineSimilarity(List<double> vector1, List<double> vector2) {
+      double dotProduct = 0;
+      double magnitude1 = 0;
+      double magnitude2 = 0;
+
+      for (int i = 0; i < vector1.length; i++) {
+        dotProduct += vector1[i] * vector2[i];
+        magnitude1 += vector1[i] * vector1[i];
+        magnitude2 += vector2[i] * vector2[i];
+      }
+
+      magnitude1 = sqrt(magnitude1);
+      magnitude2 = sqrt(magnitude2);
+
+      if (magnitude1 == 0 || magnitude2 == 0) {
+        return 0; // To handle division by zero
+      }
+
+      return dotProduct / (magnitude1 * magnitude2);
+    }
+
+// Function to recommend items to a user based on their previous order
+    List<String> recommendItems(
+        String orderedItem, Map<String, List<double>> itemVectors) {
+      Map<String, double> itemScores = {};
+
+      // Calculate similarity scores for each item
+      for (String item in itemVectors.keys) {
+        if (item == orderedItem) continue; // Skip the ordered item itself
+        double similarity =
+            cosineSimilarity(itemVectors[orderedItem]!, itemVectors[item]!);
+        itemScores[item] = similarity;
+      }
+
+// Sort items by their scores in descending order
+      var sortedItems = itemScores.entries.toList()
+        ..sort((a, b) => b.value.compareTo(a.value));
+
+// Extract item names from sorted list, limiting to 10 items
+      List<String> recommendedItems =
+          sortedItems.take(10).map((e) => e.key).toList();
+
+// Print item scores
+      print('Item Scores:');
+// Sort the itemScores map by values in descending order
+      var sortedItemScores = itemScores.entries.toList()
+        ..sort((a, b) => b.value.compareTo(a.value));
+
+// Print the sorted item scores
+      sortedItemScores.forEach((entry) {
+        print('${entry.key}: ${entry.value}');
+      });
+
+      return recommendedItems;
     }
 
     return Column(
@@ -188,15 +260,26 @@ class _MainFoodSliderState extends State<MainFoodSlider>
         GetBuilder<CartController>(
           builder: (_cartController) {
             var cartList = _cartController.getCartHistoryList();
+            var orderedItem =
+                cartList.isNotEmpty ? cartList.last.name! : 'momo';
+            //----------------  calculating recommended items -------------------
+            List<String> recommendedItems =
+                recommendItems(orderedItem, itemVectors);
+            print('Recommended items for $orderedItem: $recommendedItems');
+
+            // Create a map to store the index of each item in recommendedItems
+            var indexMap = {
+              for (var item in recommendedItems)
+                item: recommendedItems.indexOf(item)
+            };
+
+            // Sort displayList based on the order of items in recommendedItems
             displayList = (product
-                    .where((element) => cartList.any((cartItem) => element.name!
-                        .toLowerCase()
-                        .split(' ')
-                        .any((word) => cartItem.name!
-                            .toLowerCase()
-                            .contains(word.toLowerCase()))))
-                    .take(100)
-                    .toList())
+                    .where(
+                        (element) => recommendedItems.contains(element.name!))
+                    .toList()
+                  ..sort((a, b) =>
+                      indexMap[a.name!]!.compareTo(indexMap[b.name!]!)))
                 .obs;
 
             return cartList.isNotEmpty
